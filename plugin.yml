@@ -1,0 +1,64 @@
+name: SimpleExtras
+main: me.odium.simpleextras.SimpleExtras
+version: 0.5
+commands:
+   ranks:
+      description: Return list of ranks from config
+      permission:
+      usage: /ranks
+   basics:
+      description: Return list of basics from config
+      permission:
+      usage: /basics
+   creative:
+      description: Change your gamemode to Creative
+      permission: simpleextras.creative
+      usage: /creative
+   survival:
+      description: Change your gamemode to Survival
+      permission: simpleextras.survival
+      usage: /survival
+   boom:
+      description: Creates a peaceful explosion on a player
+      permission: simpleextras.boom
+      usage: /boom [d/h/s] <playername>
+   se:
+      description: Help Menu
+      permission:
+      usage: /se
+   exp:
+      description: Awards a player the specified experience points
+      permission: simpleextras.exp
+      usage: /exp <player> <#>
+   levelup:
+      description: Raises a players experience level by the specified number
+      permission: simpleextras.levelup
+      usage: /levelup <player>
+   levelset:
+      description: Set a users experience level to the specified #
+      permission: simpleextras.levelset
+      usage: /levelset <player>
+   levelget:
+      description: View a users experience level
+      permission: odiplugin.levelget
+      usage: /levelget <player>
+   bed:
+      description: Returns a user to their bed spawn location
+      permission: simpleextras.bed
+      usage: /bed
+   seen:
+      description: Returns when the player was last seen on the server
+      permission: simpleextras.seen
+      usage: /seen <player>
+   seenf:
+      description: Returns when the player was first seen on the server
+      permission: simpleextras.seenf
+      usage: /seenf <player>
+   player:
+      description: Search all players who have joined the server
+      permission: simpleextras.player
+      usage: /player <playername>
+   zoom:
+      description: zoom in, up or down
+      permission: simpleextras.zoom
+      usage: /zoom [in/up/down] <# of blocks>

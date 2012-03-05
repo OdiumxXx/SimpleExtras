@@ -1,0 +1,24 @@
+# SimpleExtras version 0.4 [Odium]
+# 0 = Black  |  1 = DarkGray
+# 2 = GRAY   |  w = White
+# r = Red    |  R = DarkRed
+# y = YELLOW |  Y = Gold
+# g = Green  |  G = DarkGreen
+# c = Cyan   |  C = DarkCyan
+# b = Blue   |  B = DarkBlue
+# p = Purple |  P = DarkPurple
+ranks:
+- '`yThe server ranks are as follows...'
+- '`1- Spectator'
+- '`2- Default'
+- '`y- Guest'
+- '`P- Builder'
+- '`R- AdvBuilder'
+- '`B- Regular'
+- '`c- Admin'
+- '`r- Owner'
+basics:
+- '`c/ranks `y- List the server ranks'
+- '`c/MoTD `y- Return the Message of The Day'
+- '`c/se `y- Return the SimpleExtras Menu.'
+- '`c/someone `y- hasnt changed their config!'

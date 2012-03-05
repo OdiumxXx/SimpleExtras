@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class SimpleExtras extends JavaPlugin {
 
 
   public void onEnable(){
-    log.info("[SimpleExtras-" + version + " enabled]");
+    log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " enabled.");
     FileConfiguration cfg = getConfig();
     FileConfigurationOptions cfgOptions = cfg.options();
     cfgOptions.copyDefaults(true);
@@ -32,7 +33,7 @@ public class SimpleExtras extends JavaPlugin {
   }
 
   public void onDisable(){ 
-    log.info("[SimpleExtras-" + version + " disabled]");	
+    log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " disabled.");	
   }
 
   public static String getCurrentDTG (long l_time){
@@ -126,6 +127,34 @@ public class SimpleExtras extends JavaPlugin {
       return true;
     }
 
+    // Gamemode Changer
+    
+    if(cmd.getName().equalsIgnoreCase("creative")){
+      int gm = player.getGameMode().getValue();
+      if(gm == 0){
+        player.setGameMode(GameMode.CREATIVE);
+        log.info(player + "Changed gamemode to CREATIVE");
+        sender.sendMessage(ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Creative");
+        return true;
+      } else {
+        sender.sendMessage(ChatColor.GRAY + "You're Gamemode is already set to " + ChatColor.BLUE + "Creative");
+        return true;
+      }
+            
+    }         
+    if(cmd.getName().equalsIgnoreCase("survival")){
+      int gm = player.getGameMode().getValue();
+      if(gm == 1){
+        player.setGameMode(GameMode.SURVIVAL);
+        log.info(player + "Changed gamemode to SURVIVAL");
+        sender.sendMessage(ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Survival");
+        return true;
+      } else {
+        sender.sendMessage(ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Survival");
+        return true;
+      }         
+    }
+    
     // Ye Olde Boom Command that everyone seems so fond of.
 
     if(cmd.getName().equalsIgnoreCase("boom")){
