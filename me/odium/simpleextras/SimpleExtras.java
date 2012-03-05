@@ -86,8 +86,14 @@ public class SimpleExtras extends JavaPlugin {
           sender.sendMessage(ChatColor.BLUE + "  /zoom " + ChatColor.GRAY + "- Zoom in/up/down a # of blocks");
         }
         sender.sendMessage(ChatColor.GOLD + " Stand-alone Commands:");
+        if(player.hasPermission("simpleextras.creative")) {
+          sender.sendMessage(ChatColor.BLUE + "  /creative" + ChatColor.GRAY + "- Change your gamemode to Creative");    
+        }
+        if(player.hasPermission("simpleextras.survival")) {
+          sender.sendMessage(ChatColor.BLUE + "  /creative" + ChatColor.GRAY + "- Change your gamemode to Survival");    
+        }
         if(player.hasPermission("simpleextras.boom")) {
-          sender.sendMessage(ChatColor.BLUE + "  /boom [s] PlayerName " + ChatColor.GRAY + "- Surprise user with a safe explosion");		
+          sender.sendMessage(ChatColor.BLUE + "  /boom [dsh] PlayerName " + ChatColor.GRAY + "- Surprise user with a safe explosion");		
         }
         if(player.hasPermission("simpleextras.bed")) {
           sender.sendMessage(ChatColor.BLUE + "  /bed " + ChatColor.GRAY + "- Teleport to your bed spawn");
