@@ -2,24 +2,34 @@ package me.odium.simpleextras;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.FileConfigurationOptions;
 
-
 public class SimpleExtras extends JavaPlugin {
   private static float explosionPower = 0;
-  double version = 0.4;
   Logger log = Logger.getLogger("Minecraft");
 
 
@@ -30,16 +40,82 @@ public class SimpleExtras extends JavaPlugin {
     cfgOptions.copyDefaults(true);
     cfgOptions.copyHeader(true);
     saveConfig();
+    // declare new listener
+    new PListener(this);
   }
 
   public void onDisable(){ 
     log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " disabled.");	
   }
 
+  //  .: GoMySQL :. Convert to unix timestamp.
+  //  .: GoMySQL :. Calculate hours from seconds.
+  //  .: GoMySQL :. date(now) - last_seen = #seconds / 3600 == hours since
+
   public static String getCurrentDTG (long l_time){
     Date date = new Date (l_time);
     SimpleDateFormat dtgFormat = new SimpleDateFormat ("E - hh:mm (dd/MMM/yyyy)");
     return dtgFormat.format (date);
+  }
+
+
+  public static String getFriendly(long milliseconds) {
+    String finaltime = "";
+    String unit = "";
+    long currenttime = Calendar.getInstance().getTimeInMillis();
+    Integer time = (int) (currenttime - milliseconds) / 1000;
+    if (time > 0) {
+      Integer minute = 60;
+      Integer hour = minute * 60;
+      Integer day = hour * 24;
+      int seconds = time;
+      int minutes = (int) Math.floor(time / minute);
+      int hours = (int) Math.floor(time / hour);
+      int days = (int) Math.floor(time / day);
+
+      if (days >= 1) {
+        unit = (days > 1) ? "days" : "day";
+        finaltime += days + " " + unit + " ";
+        time = time - (days * day);
+        hours = (int) Math.floor(time / hour);
+      }
+      if (hours >= 1) {
+        unit = (hours > 1) ? "hours" : "hour";
+        finaltime += hours + " " + unit + " ";
+        time = time - (hours * hour);
+        minutes = (int) Math.floor(time / minute);
+      }
+      if (minutes >= 1) {
+        unit = (minutes > 1) ? "minutes" : "minute";
+        finaltime += minutes + " " + unit + " ";
+        time = time - (minutes * minute);
+        seconds = (int) Math.floor(time);
+      }
+      if (seconds >= 1) {
+        unit = (seconds > 1) ? "seconds" : "second";
+        finaltime += seconds + " " + unit + " ";
+      }
+    }
+    else {
+      return null;
+    }
+    return finaltime;
+  }
+
+  public String myGetPlayerName(String name) { 
+    Player caddPlayer = getServer().getPlayerExact(name);
+    String pName;
+    if(caddPlayer == null) {
+      caddPlayer = getServer().getPlayer(name);
+      if(caddPlayer == null) {
+        pName = name;
+      } else {
+        pName = caddPlayer.getName();
+      }
+    } else {
+      pName = caddPlayer.getName();
+    }
+    return pName;
   }
 
   public static String replaceColorMacros(String str) {
@@ -62,6 +138,37 @@ public class SimpleExtras extends JavaPlugin {
     return str;
   }
 
+  public class PListener implements Listener {
+
+    public PListener(SimpleExtras instance) {
+      Plugin plugin = instance;
+      getServer().getPluginManager().registerEvents(this, plugin);  
+    }    
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerInteract(final PlayerInteractEvent event) {
+      Player player = event.getPlayer();
+      //make sure we are dealing with a block and not clicking on air or an entity
+      if (event.getAction().equals(Action.LEFT_CLICK_AIR) && player.getItemInHand().getTypeId() == 280 && player.hasPermission("simpleextras.fireball")) {
+        Fireball fb = player.getWorld().spawn(player.getLocation().add(0, 2, 0), Fireball.class);
+        fb.setShooter(player.getPlayer());
+        fb.setYield(0);
+        fb.setIsIncendiary(true);          
+        fb.setDirection(player.getLocation().getDirection().multiply(3));
+      }      
+    }
+  }
+
+  //  private boolean isPlayerWithinRadius(Player player, Location loc, double radius)  {
+  //    double x = player.getLocation().getX();
+  //    double y = player.getLocation().getY();
+  //    double z = player.getLocation().getZ();
+  //    double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+  //    if (distance <= radius)
+  //        return true;
+  //    else
+  //        return false;
+  //}
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
     Player player = null;
@@ -69,37 +176,61 @@ public class SimpleExtras extends JavaPlugin {
       player = (Player) sender;
     }	  
 
+    //    if(cmd.getName().equalsIgnoreCase("test")){
+    //      World world = player.getWorld();
+    //      int x = player.getLocation().getBlockX();
+    //      int y = player.getLocation().getBlockY();
+    //      int z = player.getLocation().getBlockZ();
+    //      double startx = x+5;
+    //      double startz = z+5;
+    //      double endx = x-5;
+    //      double endz = z-5;
+    //      Block blockToChange = world.getBlockAt(x,y,z); // get the block with the current coordinates
+    //      blockToChange.setTypeId(34);    // set the block to Type 34
+    //      
+    //    }
+
+
     if(cmd.getName().equalsIgnoreCase("se")){
       if (args.length == 0) {		
-        sender.sendMessage(ChatColor.GOLD + "----- SimpleExtras Menu -----");
+        sender.sendMessage(ChatColor.GOLD + "--- SimpleExtras Menu ---");
         sender.sendMessage(ChatColor.GOLD + " Menu Options:");
         if(player.hasPermission("simpleextras.exp")) {
-          sender.sendMessage(ChatColor.BLUE + "  /exp " + ChatColor.GRAY + "- Experience Based Rewards");
+          sender.sendMessage(ChatColor.AQUA + "  /exp " + ChatColor.GRAY + "- Experience Based Rewards");
         }
         if(player.hasPermission("simpleextras.seen")) {
-          sender.sendMessage(ChatColor.BLUE + "  /seen " + ChatColor.GRAY + "- Info on players first/last appearance");
+          sender.sendMessage(ChatColor.AQUA + "  /seen " + ChatColor.GRAY + "- Info on players first/last appearance");
         }
-        if(player.hasPermission("simpleextras.player")) {
-          sender.sendMessage(ChatColor.BLUE + "  /player " + ChatColor.GRAY + "- Search the player-history");
+        if(player.hasPermission("simpleextras.findplayer")) {
+          sender.sendMessage(ChatColor.AQUA + "  /findplayer " + ChatColor.GRAY + "- Search the player-history");
         }
         if(player.hasPermission("simpleextras.zoom")) {
-          sender.sendMessage(ChatColor.BLUE + "  /zoom " + ChatColor.GRAY + "- Zoom in/up/down a # of blocks");
+          sender.sendMessage(ChatColor.AQUA + "  /zoom " + ChatColor.GRAY + "- Zoom in/up/down a # of blocks");
+        }
+        if(player.hasPermission("simpleextras.effects")) {
+          sender.sendMessage(ChatColor.AQUA + "  /effects " + ChatColor.GRAY + "- Return a list of player effects");
         }
         sender.sendMessage(ChatColor.GOLD + " Stand-alone Commands:");
+        sender.sendMessage(ChatColor.BLUE + "  /ranks " + ChatColor.GRAY + "- Return a list of server ranks");
+        sender.sendMessage(ChatColor.BLUE + "  /basics " + ChatColor.GRAY + "- Return a list of server basic");
         if(player.hasPermission("simpleextras.creative")) {
-          sender.sendMessage(ChatColor.BLUE + "  /creative" + ChatColor.GRAY + "- Change your gamemode to Creative");    
+          sender.sendMessage(ChatColor.BLUE + "  /creative" + ChatColor.GRAY + "- Change a gamemode to Creative");    
         }
         if(player.hasPermission("simpleextras.survival")) {
-          sender.sendMessage(ChatColor.BLUE + "  /creative" + ChatColor.GRAY + "- Change your gamemode to Survival");    
+          sender.sendMessage(ChatColor.BLUE + "  /survival" + ChatColor.GRAY + "- Change a gamemode to Survival");    
         }
         if(player.hasPermission("simpleextras.boom")) {
-          sender.sendMessage(ChatColor.BLUE + "  /boom [dsh] PlayerName " + ChatColor.GRAY + "- Surprise user with a safe explosion");		
+          sender.sendMessage(ChatColor.BLUE + "  /boom [dsh] PlayerName " + ChatColor.GRAY + "- explode a user");   
+        }
+        if(player.hasPermission("simpleextras.fireball")) {
+          sender.sendMessage(ChatColor.BLUE + "  /gf" + ChatColor.GRAY + " - Fireball (or leftclick with stick)");    
         }
         if(player.hasPermission("simpleextras.bed")) {
           sender.sendMessage(ChatColor.BLUE + "  /bed " + ChatColor.GRAY + "- Teleport to your bed spawn");
         }
-        sender.sendMessage(ChatColor.BLUE + "  /ranks " + ChatColor.GRAY + "- Return a list of server ranks");
-        sender.sendMessage(ChatColor.BLUE + "  /basics " + ChatColor.GRAY + "- Return a list of server basic");
+        if(player.hasPermission("simpleextras.magic")) {
+          sender.sendMessage(ChatColor.BLUE + "  /magic <text>" + ChatColor.GRAY + "- Magic Font!");    
+        }
         return true;	
       } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
         if(player.hasPermission("simpleextras.reload")) {
@@ -108,8 +239,38 @@ public class SimpleExtras extends JavaPlugin {
           return true;
         } else {
           sender.sendMessage(ChatColor.RED + "You do not have permission");
+          return true;
         }
       }
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("effects")){
+      sender.sendMessage(ChatColor.GOLD + "- Player Effects -");
+      if(player.hasPermission("simpleextras.ignite")) {
+        sender.sendMessage(ChatColor.RED + "  /ignite <playername>" + ChatColor.GRAY + "- Ignite a player");    
+      }        
+      if(player.hasPermission("simpleextras.blind")) {
+        sender.sendMessage(ChatColor.RED + "  /blind <playername> <minutes>" + ChatColor.GRAY + "- Blind a player");    
+      }
+      if(player.hasPermission("simpleextras.slow")) {
+        sender.sendMessage(ChatColor.RED + "  /slow <playername> <minutes>" + ChatColor.GRAY + "- Slow a player");    
+      }
+      if(player.hasPermission("simpleextras.confuse")) {
+        sender.sendMessage(ChatColor.RED + "  /confuse <playername> <minutes>" + ChatColor.GRAY + "- Confuse a player");    
+      }
+      if(player.hasPermission("simpleextras.fly")) {
+        sender.sendMessage(ChatColor.GREEN + "  /fly [playername] [minutes]" + ChatColor.GRAY + "- Toggle flight");    
+      }
+      if(player.hasPermission("simpleextras.speed")) {
+        sender.sendMessage(ChatColor.GREEN + "  /speed <playername> <minutes>" + ChatColor.GRAY + "- Give player Speed x2");    
+      }        
+      if(player.hasPermission("simpleextras.jump")) {
+        sender.sendMessage(ChatColor.GREEN + "  /jump <playername> <minutes>" + ChatColor.GRAY + "- Give player Jump x2");    
+      }
+      if(player.hasPermission("simpleextras.superdig")) {
+        sender.sendMessage(ChatColor.GREEN + "  /superdig <playername> <minutes>" + ChatColor.GRAY + "- Give player SuperDig x2");    
+      }
+      return true;
     }
 
     // Ranks and Basics output	  
@@ -131,36 +292,83 @@ public class SimpleExtras extends JavaPlugin {
         sender.sendMessage(replaceColorMacros(iter.next()));		        
       }	        
       return true;
+    }    
+
+    if(cmd.getName().equalsIgnoreCase("owner")){
+      String owner = getConfig().getString("owner");
+      sender.sendMessage(ChatColor.RED + owner + ChatColor.GRAY + " is the Owner of this server");
+      return true;
+    }
+
+    if(cmd.getName().equalsIgnoreCase("website")){
+      String website = getConfig().getString("website");  
+      sender.sendMessage(ChatColor.GRAY + "Website: " + ChatColor.AQUA + website);
+      return true;
     }
 
     // Gamemode Changer
-    
+
     if(cmd.getName().equalsIgnoreCase("creative")){
-      int gm = player.getGameMode().getValue();
-      if(gm == 0){
-        player.setGameMode(GameMode.CREATIVE);
-        log.info(player + "Changed gamemode to CREATIVE");
-        sender.sendMessage(ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Creative");
-        return true;
-      } else {
-        sender.sendMessage(ChatColor.GRAY + "You're Gamemode is already set to " + ChatColor.BLUE + "Creative");
-        return true;
+      if (args.length == 0) {
+        int gm = player.getGameMode().getValue();
+        if(gm == 0){
+          player.setGameMode(GameMode.CREATIVE);
+          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Creative");
+          return true;
+        } else {
+          sender.sendMessage(ChatColor.RED + "* " + ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Creative");
+          return true;
+        }
+      } else if(args.length == 1 && player.hasPermission("simpleextras.creative.other")) {
+        Player target = this.getServer().getPlayer(args[0]);
+        if (target == null) {
+          // DO NOTHING
+          return true;
+        } else {
+          int gm = target.getGameMode().getValue();
+          if(gm == 0){
+            target.setGameMode(GameMode.CREATIVE);
+            sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.BLUE + target + ChatColor.GRAY + "'s Gamemode has been changed to " + ChatColor.BLUE + "Creative");
+            return true;
+          } else {
+            sender.sendMessage(ChatColor.RED + "* " + ChatColor.BLUE + target + ChatColor.GRAY + "'s Gamemode is already set to " + ChatColor.BLUE + "Creative");
+            return true; 
+          }
+        }
       }
-            
-    }         
-    if(cmd.getName().equalsIgnoreCase("survival")){
-      int gm = player.getGameMode().getValue();
-      if(gm == 1){
-        player.setGameMode(GameMode.SURVIVAL);
-        log.info(player + "Changed gamemode to SURVIVAL");
-        sender.sendMessage(ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Survival");
-        return true;
-      } else {
-        sender.sendMessage(ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Survival");
-        return true;
-      }         
     }
-    
+
+    if(cmd.getName().equalsIgnoreCase("survival")){
+      if (args.length == 0) {
+        int gm = player.getGameMode().getValue();
+        if(gm == 1){
+          player.setGameMode(GameMode.SURVIVAL);
+          log.info(player + "Changed gamemode to SURVIVAL");
+          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.GRAY + "Your Gamemode has been changed to " + ChatColor.BLUE + "Survival");
+          return true;
+        } else {
+          sender.sendMessage(ChatColor.RED + "* " + ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Survival");
+          return true;
+        }         
+      } else if(args.length == 1 && player.hasPermission("simpleextras.survival.other")) {
+        Player target = this.getServer().getPlayer(args[0]);
+        if (target == null) {
+          // DO NOTHING
+          return true;
+        } else {
+          int gm = target.getGameMode().getValue();
+          if(gm == 0){
+            target.setGameMode(GameMode.CREATIVE);
+            sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.BLUE + target + ChatColor.GRAY + "'s Gamemode has been changed to " + ChatColor.BLUE + "Creative");
+            return true;
+          } else {
+            sender.sendMessage(ChatColor.RED + "* " + ChatColor.BLUE + target + ChatColor.GRAY + "'s Gamemode is already set to " + ChatColor.BLUE + "Creative");
+            return true; 
+          }
+        }
+      }
+    }
+
     // Ye Olde Boom Command that everyone seems so fond of.
 
     if(cmd.getName().equalsIgnoreCase("boom")){
@@ -226,7 +434,7 @@ public class SimpleExtras extends JavaPlugin {
         if (player == null) {
           sender.sendMessage("This command can only be run by a player");
         } else {	    
-          sender.sendMessage(ChatColor.GOLD + " ----- Experience Rewards ----- ");
+          sender.sendMessage(ChatColor.GOLD + " --- Experience Rewards --- ");
           sender.sendMessage(ChatColor.BLUE + "  /exp PlayerName # " + ChatColor.GRAY + "- Award a user # of exp points");
           sender.sendMessage(ChatColor.BLUE + "  /levelup PlayerName # " + ChatColor.GRAY + "- Award a user # of exp levels");
           sender.sendMessage(ChatColor.BLUE + "  /levelset PlayerName # " + ChatColor.GRAY + "- Set a users exp level");
@@ -381,7 +589,7 @@ public class SimpleExtras extends JavaPlugin {
         if (player == null) {
           sender.sendMessage("This command can only be run by a player");
         } else {
-          sender.sendMessage(ChatColor.GOLD + " ----- Seen ----- ");
+          sender.sendMessage(ChatColor.GOLD + " --- Seen --- ");
           sender.sendMessage(ChatColor.BLUE + "  /seen PlayerName " + ChatColor.GRAY + "- Return the LAST time player was seen");
           sender.sendMessage(ChatColor.BLUE + "  /seenf PlayerName " + ChatColor.GRAY + "- Return the FIRST time player was seen");
           sender.sendMessage(ChatColor.GRAY + "Note: These commands are " + ChatColor.RED + "CaseSensitive");
@@ -400,13 +608,15 @@ public class SimpleExtras extends JavaPlugin {
         } else {
           OfflinePlayer target = this.getServer().getOfflinePlayer(args[0]);
           long lastseen = target.getLastPlayed();
+          //          int lastseen = (int) target.getLastPlayed() / 1000;
           if(lastseen == 0) {	    			
             sender.sendMessage(ChatColor.BLUE + "'" + args[0] + "'" + ChatColor.GRAY + " has not been seen!");
             sender.sendMessage(ChatColor.GOLD + "(Must use exact username)");
             return true;
           } else {
-            String strDte = getCurrentDTG(lastseen);
-            sender.sendMessage(ChatColor.BLUE + target.getName() + ChatColor.GRAY + " was last seen: " + ChatColor.BLUE + strDte);
+            //            String strDte = getCurrentDTG(lastseen);
+            String strDte = getFriendly(lastseen);
+            sender.sendMessage(ChatColor.BLUE + target.getName() + ChatColor.GRAY + " was last seen: " + ChatColor.BLUE + strDte + ChatColor.GRAY + "ago");
             return true;		    	  
           }
         }
@@ -437,12 +647,13 @@ public class SimpleExtras extends JavaPlugin {
             sender.sendMessage(ChatColor.GOLD + "(Must use exact username)");
             return true;	           
           } else {			      
-            String strDte = getCurrentDTG(firstseen);
+            String strDte = getFriendly(firstseen);
             sender.sendMessage(ChatColor.BLUE + target.getName() + ChatColor.GRAY + " first logged in: " + ChatColor.BLUE + strDte);
           } 					
         } else {
           long firstseen = targeton.getFirstPlayed();
-          String strDte = getCurrentDTG(firstseen);
+          //          String strDte = getCurrentDTG(firstseen);
+          String strDte = getFriendly(firstseen);          
           sender.sendMessage(ChatColor.BLUE + targeton.getName() + ChatColor.GRAY + " first logged in: " + ChatColor.BLUE + strDte);
         }
         return true;
@@ -451,13 +662,13 @@ public class SimpleExtras extends JavaPlugin {
 
     // Player Search
 
-    if(cmd.getName().equalsIgnoreCase("player")){
+    if(cmd.getName().equalsIgnoreCase("findplayer")){
       if (player == null) {
         sender.sendMessage("This command can only be run by a player");
       } else {        	   
         if (args.length == 0) {
-          sender.sendMessage(ChatColor.GOLD + " ----- Player Search ----- ");
-          sender.sendMessage(ChatColor.BLUE + "  /Player PartofName " + ChatColor.GRAY + "- Search for a player " + ChatColor.RED + "(CaseSensitive)");
+          sender.sendMessage(ChatColor.GOLD + " --- Player Search --- ");
+          sender.sendMessage(ChatColor.BLUE + "  /findplayer PartofName " + ChatColor.GRAY + "- Search for a player " + ChatColor.RED + "(CaseSensitive)");
           return true;
         } else {
           sender.sendMessage(ChatColor.GOLD + "Search Results:");
@@ -477,7 +688,7 @@ public class SimpleExtras extends JavaPlugin {
 
     if(cmd.getName().equalsIgnoreCase("zoom")){
       if (args.length == 0) {	    	  
-        sender.sendMessage(ChatColor.GOLD + " ----- Zoom ----- ");
+        sender.sendMessage(ChatColor.GOLD + " --- Zoom --- ");
         sender.sendMessage(ChatColor.BLUE + "  /zoom in # " + ChatColor.GRAY + "- Zoom where player is looking by # of blocks");
         sender.sendMessage(ChatColor.BLUE + "  /zoom up # " + ChatColor.GRAY + "- Zoom UP number of blocks");
         sender.sendMessage(ChatColor.BLUE + "  /zoom down # " + ChatColor.GRAY + "- Zoom DOWN number of blocks");
@@ -515,6 +726,300 @@ public class SimpleExtras extends JavaPlugin {
         player.teleport(loc);
         sender.sendMessage(ChatColor.GRAY + "Zoomed " + ChatColor.BLUE + "DOWN " + args[1] + ChatColor.GRAY + " Blocks");
         return true;
+      }
+    }
+
+    if(cmd.getName().equalsIgnoreCase("fly")){
+      if(args.length == 0) {
+        Boolean canfly = player.getAllowFlight();
+        if(canfly == true) {
+          player.setAllowFlight(false);
+          player.setFlying(false);
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");
+          return true;
+        } else if(canfly == false) {
+          player.setAllowFlight(true);
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GREEN + "Flight " + ChatColor.GREEN +  "enabled ");
+          return true;
+        }
+      } else if(args.length == 1 && player.hasPermission("simpleextras.fly.other") || player == null) {
+        Player target = this.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          Boolean canfly = target.getAllowFlight();
+          String targetname = target.getDisplayName();
+          if(canfly == true) {
+            target.setAllowFlight(false);          
+            target.setFlying(false);
+            sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.RED +  "disabled " + ChatColor.GRAY + "for " + ChatColor.BLUE + targetname);
+            return true;
+          } else if(canfly == false) {
+            target.setAllowFlight(true);
+            sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.GRAY + "for " + ChatColor.BLUE +  targetname);
+            return true;
+          }
+        }
+      } else if(args.length == 2 && player.hasPermission("simpleextras.fly.other") || player == null) {
+        final Player target1 = this.getServer().getPlayer(args[0]);
+        if (target1 == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+        final Player player1 = player;
+        Boolean canfly = target1.getAllowFlight();
+        String targetname = target1.getDisplayName();
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;  
+        if(canfly == true) {
+          sender.sendMessage("Already allowed to fly, timer set anyway.");        
+          this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+            public void run() {
+              target1.setAllowFlight(false);          
+              target1.setFlying(false);
+              player1.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.RED +  "disabled " + ChatColor.GRAY + "for " + ChatColor.BLUE + target1.getDisplayName());
+            }
+          }, mins);
+          return true;
+        } else if(canfly == false) {
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.GRAY + "for " + ChatColor.BLUE +  targetname + ChatColor.GRAY + " for " + min + " minutes");
+          target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.GRAY + "for " + ChatColor.BLUE + min + ChatColor.GRAY + " minutes");
+          target1.setAllowFlight(true);          
+          target1.setFlying(true);
+          this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+            public void run() {
+              target1.setAllowFlight(false);          
+              target1.setFlying(false);
+              player1.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Flight " + ChatColor.RED +  "disabled " + ChatColor.GRAY + "for " + ChatColor.BLUE + target1.getDisplayName());
+              target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");
+            }
+          }, mins);
+          return true;
+        }
+      }
+    }
+    }
+
+    if(cmd.getName().equalsIgnoreCase("ignite")){
+      if (args.length == 0) {        
+        player.setFireTicks(10000);
+        sender.sendMessage(ChatColor.GREEN + "" + player.getDisplayName() + ChatColor.GRAY + " ignited");
+        return true;
+      } else {
+        Player target = this.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.setFireTicks(10000);
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " ignited");
+          return true;
+        }
+      }
+    }
+
+    if(cmd.getName().equalsIgnoreCase("speed")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.speed.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, mins, 2));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " given speed x2 for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given speed x2 for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+
+    if(cmd.getName().equalsIgnoreCase("blind")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1200, 1));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been blinded for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1200, 1));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been blinded for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been blinded for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.blind.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, mins, 1));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been blinded for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been blinded for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("jump")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 3));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 3));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.jump.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, mins, 3));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been given jump x2 for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given jump x2 for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("confuse")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1200, 1));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been confused for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1200, 1));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been confused for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been confused for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.confuse.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, mins, 1));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been confused for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been confused for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("slow")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1200, 2));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been slowed for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1200, 2));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been slowed for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been slowed for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.slow.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, mins, 2));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been slowed for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been slowed for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("superdig")){
+      if (args.length == 0) {
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 1200, 2));
+        sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given SuperDig for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+        return true;
+      } else if (args.length == 1) {
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        if (target == null) {
+          sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+          return true;
+        } else {
+          target.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 1200, 2));
+          sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been given SuperDig for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given SuperDig for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
+          return true;
+        }
+      } else if (args.length == 2 && player.hasPermission("simpleextras.superdig.other")) {  
+        Player target = Bukkit.getServer().getPlayer(args[0]);
+        String min = args[1];
+        int mintemp = Integer.parseInt( min );
+        int mins = 1200 * mintemp;        
+        target.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, mins, 2));
+        sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.GRAY + " has been given SuperDig for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given SuperDig for " + ChatColor.GREEN + min + ChatColor.GRAY + " minutes");
+        return true;
+      } 
+    }
+
+    if(cmd.getName().equalsIgnoreCase("magic")){
+      StringBuilder sb = new StringBuilder();
+      for (String arg : args)
+        sb.append(arg + " ");          
+          String[] temp = sb.toString().split(" ");
+          String[] temp2 = Arrays.copyOfRange(temp, 0, temp.length);
+          sb.delete(0, sb.length());
+          for (String details : temp2)
+          {
+            sb.append(details);
+            sb.append(" ");
+          }
+          String details = sb.toString();
+          player.chat("" + ChatColor.MAGIC + details);
+          return true;
+    }
+
+    if(cmd.getName().equalsIgnoreCase("gf")){
+      if (player == null) {
+        sender.sendMessage("this command can only be run by a player");
+        return true;
+      } else {
+        if (args.length == 0) {
+          Fireball fb = player.getWorld().spawn(player.getLocation().add(0, 1, 0), Fireball.class);
+          fb.setShooter(player.getPlayer());
+          fb.setYield(0);
+          fb.setFireTicks(10000);
+          fb.setIsIncendiary(true);          
+          fb.setDirection(player.getLocation().getDirection().multiply(10));
+          //.multiply(Integer.MAX_VALUE).subtract(new Vector(0,3,0)));
+          return true;
+        }
       }
     }
 

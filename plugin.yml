@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.5
+version: 0.8
 commands:
    ranks:
       description: Return list of ranks from config
@@ -10,6 +10,14 @@ commands:
       description: Return list of basics from config
       permission:
       usage: /basics
+   owner:
+      description: Reminds you of who the owner of the server is
+      permission:
+      usage: /owner
+   website:
+      description: Lists the servers webaddress
+      permission:
+      usage: /website
    creative:
       description: Change your gamemode to Creative
       permission: simpleextras.creative
@@ -54,11 +62,55 @@ commands:
       description: Returns when the player was first seen on the server
       permission: simpleextras.seenf
       usage: /seenf <player>
-   player:
+   findplayer:
       description: Search all players who have joined the server
-      permission: simpleextras.player
-      usage: /player <playername>
+      permission: simpleextras.findplayer
+      usage: /findplayer <part of playername>
    zoom:
       description: zoom in, up or down
       permission: simpleextras.zoom
       usage: /zoom [in/up/down] <# of blocks>
+   fly:
+      description: Enable/disable flight for a user
+      permission: simpleextras.fly
+      usage: /fly
+   ignite:
+      description: ignite a player
+      permission: simpleextras.ignite
+      usage: /ignite <playername>
+   speed:
+      description: give a player speed x2
+      permission: simpleextras.speed
+      usage: /speed <playername> [mins]
+   blind:
+      description: blind a player
+      permission: simpleextras.blind
+      usage: /blind <playername> [mins]
+   jump:
+      description: give a player jump x2
+      permission: simpleextras.jump
+      usage: /jump <playername> [mins]
+   confuse:
+      description: confuse a player
+      permission: simpleextras.confuse
+      usage: /confuse <playername> [mins]
+   slow:
+      description: slow a player
+      permission: simpleextras.slow
+      usage: /slow <playername> [mins]
+   superdig:
+      description: confuse a player
+      permission: simpleextras.superdig
+      usage: /superdig <playername> [mins]
+   gf:
+      description: fireball
+      permission: simpleextras.fireball
+      usage: /gf
+   magic:
+      description: magic text
+      permission: simpleextras.magic
+      usage: /magic <text>
+   effects:
+      description: player effects menu
+      permission: simpleextras.effects
+      usage: /effects

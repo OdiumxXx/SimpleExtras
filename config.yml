@@ -1,4 +1,4 @@
-# SimpleExtras version 0.4 [Odium]
+# SimpleExtras
 # 0 = Black  |  1 = DarkGray
 # 2 = GRAY   |  w = White
 # r = Red    |  R = DarkRed
@@ -22,3 +22,5 @@ basics:
 - '`c/MoTD `y- Return the Message of The Day'
 - '`c/se `y- Return the SimpleExtras Menu.'
 - '`c/someone `y- hasnt changed their config!'
+owner: ServerOwner
+website: http://YourWebAddressHere.com
