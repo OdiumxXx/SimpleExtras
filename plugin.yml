@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.8
+version: 0.8.1
 commands:
    ranks:
       description: Return list of ranks from config
@@ -60,7 +60,7 @@ commands:
       usage: /seen <player>
    seenf:
       description: Returns when the player was first seen on the server
-      permission: simpleextras.seenf
+      permission: simpleextras.seen
       usage: /seenf <player>
    findplayer:
       description: Search all players who have joined the server
