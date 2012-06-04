@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.8.1
+version: 0.8.4
 commands:
    ranks:
       description: Return list of ranks from config
@@ -48,7 +48,7 @@ commands:
       usage: /levelset <player>
    levelget:
       description: View a users experience level
-      permission: odiplugin.levelget
+      permission: simpleextras.levelget
       usage: /levelget <player>
    bed:
       description: Returns a user to their bed spawn location

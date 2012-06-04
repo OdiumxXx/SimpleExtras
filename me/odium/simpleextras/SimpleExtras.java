@@ -118,7 +118,7 @@ public class SimpleExtras extends JavaPlugin {
     str = str.replace("`R", ChatColor.DARK_RED.toString());        
     str = str.replace("`y", ChatColor.YELLOW.toString());
     str = str.replace("`Y", ChatColor.GOLD.toString());
-    str = str.replace("`g", ChatColor.BLUE.toString());
+    str = str.replace("`g", ChatColor.GREEN.toString());
     str = str.replace("`G", ChatColor.DARK_GREEN.toString());        
     str = str.replace("`c", ChatColor.AQUA.toString());
     str = str.replace("`C", ChatColor.DARK_AQUA.toString());        
@@ -314,7 +314,7 @@ public class SimpleExtras extends JavaPlugin {
           sender.sendMessage(ChatColor.RED + "* " + ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Creative");
           return true;
         }
-      } else if(args.length == 1 && player.hasPermission("simpleextras.creative.other") || player == null) {
+      } else if(args.length == 1 && player == null || args.length == 1 && player.hasPermission("simpleextras.creative.other")) {
         Player target = this.getServer().getPlayer(args[0]);
         if (target == null) {
           // DO NOTHING
@@ -345,7 +345,7 @@ public class SimpleExtras extends JavaPlugin {
           sender.sendMessage(ChatColor.RED + "* " + ChatColor.GRAY + "Your Gamemode is already set to " + ChatColor.BLUE + "Survival");
           return true;
         }         
-      } else if(args.length == 1 && player.hasPermission("simpleextras.survival.other") || player == null) {
+      } else if(args.length == 1 && player == null || args.length == 1 && player.hasPermission("simpleextras.survival.other")) {
         Player target = this.getServer().getPlayer(args[0]);
         if (target == null) {
           // DO NOTHING
@@ -580,6 +580,22 @@ public class SimpleExtras extends JavaPlugin {
           }
 
         } 
+      } else if(args.length == 1) {
+        if (player == null) {
+          sender.sendMessage("This command can only be run by a player");
+        } else {
+          String target = myGetPlayerName(args[0]);
+          OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);
+          Location bedloc = targetplay.getBedSpawnLocation();
+          if (bedloc != null) {
+            player.teleport(bedloc);
+            player.sendMessage(ChatColor.GRAY + target + "'s bed");
+            return true;  
+          } else {
+            player.sendMessage(ChatColor.GRAY + target + " has not yet slept in a bed");
+            return true;
+          }
+        }
       }
     }
 
@@ -608,7 +624,7 @@ public class SimpleExtras extends JavaPlugin {
           } else {
             String strDte = getCurrentDTG(lastseen);
             // String strDte = getFriendly(lastseen);
-            sender.sendMessage(ChatColor.BLUE + target.getName() + ChatColor.GRAY + " was last seen: " + ChatColor.BLUE + strDte + ChatColor.GRAY + "ago");
+            sender.sendMessage(ChatColor.BLUE + target.getName() + ChatColor.GRAY + " was last seen: " + ChatColor.BLUE + strDte);
             return true;		    	  
           }
         }
@@ -821,7 +837,7 @@ public class SimpleExtras extends JavaPlugin {
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
           return true;
         }
-      } else if (args.length == 2 && player.hasPermission("simpleextras.speed.other") || player == null) {  
+      } else if (player == null || args.length == 2 && player.hasPermission("simpleextras.speed.other")) {  
         Player target = Bukkit.getServer().getPlayer(args[0]);
         String min = args[1];
         int mintemp = Integer.parseInt( min );
@@ -849,7 +865,7 @@ public class SimpleExtras extends JavaPlugin {
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been blinded for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
           return true;
         }
-      } else if (args.length == 2 && player.hasPermission("simpleextras.blind.other") || player == null) {  
+      } else if (player == null || args.length == 2 && player.hasPermission("simpleextras.blind.other")) {  
         Player target = Bukkit.getServer().getPlayer(args[0]);
         String min = args[1];
         int mintemp = Integer.parseInt( min );
@@ -877,7 +893,7 @@ public class SimpleExtras extends JavaPlugin {
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
           return true;
         }
-      } else if (args.length == 2 && player.hasPermission("simpleextras.jump.other") || player == null) {  
+      } else if (player == null || args.length == 2 && player.hasPermission("simpleextras.jump.other")) {  
         Player target = Bukkit.getServer().getPlayer(args[0]);
         String min = args[1];
         int mintemp = Integer.parseInt( min );
@@ -905,7 +921,7 @@ public class SimpleExtras extends JavaPlugin {
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been confused for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
           return true;
         }
-      } else if (args.length == 2 && player.hasPermission("simpleextras.confuse.other") || player == null) {  
+      } else if (player == null || args.length == 2 && player.hasPermission("simpleextras.confuse.other")) {  
         Player target = Bukkit.getServer().getPlayer(args[0]);
         String min = args[1];
         int mintemp = Integer.parseInt( min );
@@ -933,7 +949,7 @@ public class SimpleExtras extends JavaPlugin {
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "You have been slowed for " + ChatColor.GREEN + "1" + ChatColor.GRAY + " minute");
           return true;
         }
-      } else if (args.length == 2 && player.hasPermission("simpleextras.slow.other") || player == null) {  
+      } else if (player == null || args.length == 2 && player.hasPermission("simpleextras.slow.other")) {  
         Player target = Bukkit.getServer().getPlayer(args[0]);
         String min = args[1];
         int mintemp = Integer.parseInt( min );
