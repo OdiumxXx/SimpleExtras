@@ -22,5 +22,9 @@ basics:
 - '`c/MoTD `y- Return the Message of The Day'
 - '`c/se `y- Return the SimpleExtras Menu.'
 - '`c/someone `y- hasnt changed their config!'
+admin:
+- '`cAdministrator 1'
+- '`cAdministrator 2'
+- '`cAdministrator 3'
 owner: ServerOwner
 website: http://YourWebAddressHere.com

@@ -273,7 +273,7 @@ public class SimpleExtras extends JavaPlugin {
     if(cmd.getName().equalsIgnoreCase("ranks")){
       java.util.List<String> rank = getConfig().getStringList("ranks");
       Iterator<String> iter = rank.iterator();        
-      sender.sendMessage(ChatColor.GOLD + "--- Server Ranks ---");		        
+      sender.sendMessage(ChatColor.GOLD + "- Server Ranks -");		        
       while (iter.hasNext()) {
         sender.sendMessage(replaceColorMacros(iter.next()));
       }	    
@@ -282,12 +282,22 @@ public class SimpleExtras extends JavaPlugin {
     if(cmd.getName().equalsIgnoreCase("basics")){
       java.util.List<String> basic = getConfig().getStringList("basics");
       Iterator<String> iter = basic.iterator();
-      sender.sendMessage(ChatColor.GOLD + "--- Basic Commands ---");		        
+      sender.sendMessage(ChatColor.GOLD + "- Basic Commands -");		        
       while (iter.hasNext()) {		        		
         sender.sendMessage(replaceColorMacros(iter.next()));		        
       }	        
       return true;
-    }    
+    }
+    
+    if(cmd.getName().equalsIgnoreCase("admin")){
+      java.util.List<String> admin = getConfig().getStringList("admin");
+      Iterator<String> iter = admin.iterator();        
+      sender.sendMessage(ChatColor.GOLD + "- Server Administrators -");            
+      while (iter.hasNext()) {
+        sender.sendMessage(replaceColorMacros(iter.next()));
+      }     
+      return true;
+    }
 
     if(cmd.getName().equalsIgnoreCase("owner")){
       String owner = getConfig().getString("owner");
