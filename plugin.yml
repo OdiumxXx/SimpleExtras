@@ -114,3 +114,7 @@ commands:
       description: player effects menu
       permission: simpleextras.effects
       usage: /effects
+   admin:
+      description: Lists the server admins
+      permission: simpleextras.listadmin
+      usage: /admin
