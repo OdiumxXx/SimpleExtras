@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.8.4
+version: 0.9
 commands:
    ranks:
       description: Return list of ranks from config
@@ -31,10 +31,12 @@ commands:
       permission: simpleextras.boom
       usage: /boom [d/h/s] <playername>
    se:
+      aliases: [SimpleExtras]
       description: Help Menu
       permission:
       usage: /se
    exp:
+      aliases: [xp]
       description: Awards a player the specified experience points
       permission: simpleextras.exp
       usage: /exp <player> <#>
@@ -58,7 +60,8 @@ commands:
       description: Returns when the player was last seen on the server
       permission: simpleextras.seen
       usage: /seen <player>
-   seenf:
+   seenfirst:
+      aliases: [seenf]
       description: Returns when the player was first seen on the server
       permission: simpleextras.seen
       usage: /seenf <player>
@@ -69,7 +72,7 @@ commands:
    zoom:
       description: zoom in, up or down
       permission: simpleextras.zoom
-      usage: /zoom [in/up/down] <# of blocks>
+      usage: /zoom
    fly:
       description: Enable/disable flight for a user
       permission: simpleextras.fly
@@ -98,6 +101,15 @@ commands:
       description: slow a player
       permission: simpleextras.slow
       usage: /slow <playername> [mins]
+   slowdig:
+      description: slow a players digging
+      permission: simpleextras.slowdig
+      usage: /slow <playername> [mins]
+   fireresistance:
+      aliases: [fireresist]
+      description: give a player fire resist
+      permission: simpleextras.fireresist
+      usage: /slow <playername> [mins]
    superdig:
       description: confuse a player
       permission: simpleextras.superdig
@@ -106,10 +118,6 @@ commands:
       description: fireball
       permission: simpleextras.fireball
       usage: /gf
-   magic:
-      description: magic text
-      permission: simpleextras.magic
-      usage: /magic <text>
    effects:
       description: player effects menu
       permission: simpleextras.effects
