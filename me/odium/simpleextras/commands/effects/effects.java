@@ -50,7 +50,7 @@ public class effects implements CommandExecutor {
       sender.sendMessage(ChatColor.GREEN + "  /superdig <playername> <minutes> " + ChatColor.WHITE + "- Give player SuperDig x2");    
     }
     if(player == null || player.hasPermission("simpleextras.fireresist")) {
-      sender.sendMessage(ChatColor.GREEN + "  /fireresistance <playername> <minutes> " + ChatColor.WHITE + "- Give player FireResistance");    
+      sender.sendMessage(ChatColor.GREEN + "  /fireresist <playername> <minutes> " + ChatColor.WHITE + "- Give player FireResist");    
     }
  
     return true;    

@@ -1,12 +1,18 @@
 # SimpleExtras
-# 0 = Black  |  1 = DarkGray
-# 2 = GRAY   |  w = White
-# r = Red    |  R = DarkRed
-# y = YELLOW |  Y = Gold
-# g = Green  |  G = DarkGreen
-# c = Cyan   |  C = DarkCyan
-# b = Blue   |  B = DarkBlue
-# p = Purple |  P = DarkPurple
+# `0 = Black  |  `1 = DarkGray
+# `2 = GRAY   |  `w = White
+# `r = Red    |  `R = DarkRed
+# `y = YELLOW |  `Y = Gold
+# `g = Green  |  `G = DarkGreen
+# `c = Cyan   |  `C = DarkCyan
+# `b = Blue   |  `B = DarkBlue
+# `p = Purple |  `P = DarkPurple
+#  
+# New User Welcome Message: %player% = NewPlayerName
+# Kit format: itemcode, amount
+#  So 5 stone would be 
+# - '1, 5'
+#  
 ranks:
 - '`yThe server ranks are as follows...'
 - '`1- Spectator'
@@ -26,5 +32,12 @@ admin:
 - '`cAdministrator 1'
 - '`cAdministrator 2'
 - '`cAdministrator 3'
+NewPlayer:
+  WelcomeUser: true
+  WelcomeMessage: '`cWelcome `y%player%`c to our server, have some food to get you started!'
+  GiveStarterKit: true
+  Kit:
+    - '320, 3'
+    - '260, 3'
 owner: ServerOwner
 website: http://YourWebAddressHere.com

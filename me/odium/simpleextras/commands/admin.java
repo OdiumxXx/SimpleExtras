@@ -21,7 +21,7 @@ public class admin implements CommandExecutor {
 
       java.util.List<String> admin = plugin.getConfig().getStringList("admin");
       Iterator<String> iter = admin.iterator();        
-      sender.sendMessage(ChatColor.GOLD + "[ Server Administrators ]");            
+      sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+"Server Administrators"+ChatColor.GOLD+" ]");            
       while (iter.hasNext()) {
         sender.sendMessage(plugin.replaceColorMacros(iter.next()));
       }     

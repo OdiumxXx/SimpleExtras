@@ -21,7 +21,7 @@ public class basics implements CommandExecutor {
 
       java.util.List<String> basic = plugin.getConfig().getStringList("basics");
       Iterator<String> iter = basic.iterator();
-      sender.sendMessage(ChatColor.GOLD + "[ Basic Commands ]");            
+      sender.sendMessage(ChatColor.GOLD + "[ "+ChatColor.WHITE+" Basic Commands"+ChatColor.GOLD+" ]");            
       while (iter.hasNext()) {                
         sender.sendMessage(plugin.replaceColorMacros(iter.next()));            
       }         

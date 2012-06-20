@@ -43,11 +43,13 @@ public class boom implements CommandExecutor {
         player.sendMessage(ChatColor.RED + "Boom!");
         return true;
       } else if(args[0] == "-n") {
-        Player target = (Player)sender;
-        float explosionPower = 15;
-        target.getWorld().createExplosion(target.getLocation(), explosionPower);
-        player.sendMessage(ChatColor.RED + "Boom!");
-        return true;
+        if (player == null || player.hasPermission("boom.nuke")) {
+          Player target = (Player)sender;
+          float explosionPower = 15;
+          target.getWorld().createExplosion(target.getLocation(), explosionPower);
+          player.sendMessage(ChatColor.RED + "Boom!");
+          return true;
+        }
       } else if(Bukkit.getPlayer(args[0]) != null) {              
         Player target = Bukkit.getPlayer(args[0]);
         float explosionPower = 0;
@@ -87,34 +89,38 @@ public class boom implements CommandExecutor {
         sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");
         return true;
       }
-    } else if(args.length == 2 && args[0].equals("-n")) {      
-      if(Bukkit.getPlayer(args[1]) != null) {
-        Player target = Bukkit.getPlayer(args[1]);
-        explosionPower = 17;
-        target.getWorld().createExplosion(target.getLocation(), explosionPower);  
-        if (player == null) {
-          target.sendMessage(ChatColor.RED+"Boom!"+ChatColor.WHITE+" Courtesy of: Console");
+    } else if(args.length == 2 && args[0].equals("-n")) {
+      if (player == null || player.hasPermission("boom.nuke")) {
+        if(Bukkit.getPlayer(args[1]) != null) {
+          Player target = Bukkit.getPlayer(args[1]);
+          explosionPower = 17;
+          target.getWorld().createExplosion(target.getLocation(), explosionPower);  
+          if (player.getDisplayName() == null) {
+            target.sendMessage(ChatColor.RED+"Boom!"+ChatColor.WHITE+" Courtesy of: Console");
+            sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
+            return true;
+          } else {
+            target.sendMessage(ChatColor.RED+"Boom!"+ChatColor.WHITE+" Courtesy of: " + player.getDisplayName());
+            sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
+            return true;
+          }
+        } else if(Bukkit.getPlayer(args[1]) == null) {           
+          sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");
+          return true;
+        }
+      }
+    } else if(args.length == 2 && args[0].equals("-ns")) {
+      if (player == null || player.hasPermission("boom.nuke")) {
+        if(Bukkit.getPlayer(args[1]) != null) {
+          Player target = Bukkit.getPlayer(args[1]);
+          explosionPower = 17;
+          target.getWorld().createExplosion(target.getLocation(), explosionPower);
           sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
           return true;
-        } else {
-        target.sendMessage(ChatColor.RED+"Boom!"+ChatColor.WHITE+" Courtesy of: " + player.getDisplayName());
-        sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
-        return true;
+        } else if(Bukkit.getPlayer(args[1]) == null) {           
+          sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");
+          return true;
         }
-      } else if(Bukkit.getPlayer(args[1]) == null) {           
-        sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");
-        return true;
-      }
-    } else if(args.length == 2 && args[0].equals("-ns")) {      
-      if(Bukkit.getPlayer(args[1]) != null) {
-        Player target = Bukkit.getPlayer(args[1]);
-        explosionPower = 17;
-        target.getWorld().createExplosion(target.getLocation(), explosionPower);
-        sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
-        return true;
-      } else if(Bukkit.getPlayer(args[1]) == null) {           
-        sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");
-        return true;
       }
     }
     return true;

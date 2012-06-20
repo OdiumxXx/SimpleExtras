@@ -46,12 +46,12 @@ public class fly implements CommandExecutor {
         if(canfly == true) {
           target.setAllowFlight(false);          
           target.setFlying(false);
-          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.BLUE + targetname);
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + targetname);
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED+ "disabled");
           return true;
         } else if(canfly == false) {
           target.setAllowFlight(true);
-          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.BLUE +  targetname);
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN +  targetname);
           target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled");
           return true;
         }
@@ -75,14 +75,14 @@ public class fly implements CommandExecutor {
             public void run() {
               target1.setAllowFlight(false);          
               target1.setFlying(false);
-              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.BLUE + target1.getDisplayName());
+              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + target1.getDisplayName());
             }
           }, mins);          
           return true;
 
         } else if(canfly == false) {
-          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.BLUE +  targetname + ChatColor.WHITE + " for " + min + " minutes");
-          target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.BLUE + min + ChatColor.WHITE + " minutes");
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN +  targetname + ChatColor.WHITE + " for " + min + " minutes");
+          target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + min + ChatColor.WHITE + " minutes");
           target1.setAllowFlight(true);          
           target1.setFlying(true);
 
@@ -92,7 +92,7 @@ public class fly implements CommandExecutor {
               target1.setFlying(false);
               String targetname = target1.getDisplayName();
               target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");
-              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.BLUE + targetname);
+              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + targetname);
             }
           }, mins);
           return true;

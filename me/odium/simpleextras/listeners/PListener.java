@@ -1,5 +1,7 @@
 package me.odium.simpleextras.listeners;
 
+import java.util.List;
+
 import me.odium.simpleextras.SimpleExtras;
 
 import org.bukkit.entity.Fireball;
@@ -9,14 +11,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class PListener implements Listener {
-
-    public PListener(SimpleExtras instance) {
-      Plugin plugin = instance;
-      plugin.getServer().getPluginManager().registerEvents(this, plugin);  
-    }    
+  
+  public SimpleExtras plugin;
+  public PListener(SimpleExtras plugin) {
+    this.plugin = plugin;
+    plugin.getServer().getPluginManager().registerEvents(this, plugin);  
+  }    
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteract(final PlayerInteractEvent event) {
@@ -30,4 +34,29 @@ public class PListener implements Listener {
         fb.setDirection(player.getLocation().getDirection().multiply(5));
       }      
     }
-  }
+    
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+      Player player = event.getPlayer(); 
+// IF PLAYER HAS NOT PLAYED BEFORE
+      if (!player.hasPlayedBefore()) {
+       boolean GiveStarterKit = plugin.getConfig().getBoolean("NewPlayer.GiveStarterKit");
+       if (GiveStarterKit == true) {       
+        List<String> NewPlayerKit = plugin.getConfig().getStringList("NewPlayer.Kit");       
+        for (String item:NewPlayerKit) {       
+          String[] itemlist = item.split(", ");
+          String mat = itemlist[0];
+          String amnt = itemlist[1];
+          int material = Integer.parseInt(mat);
+          int amount = Integer.parseInt(amnt);
+         player.getInventory().addItem(new ItemStack(material, amount));
+        }
+       }
+       boolean WelcomeUser = plugin.getConfig().getBoolean("NewPlayer.WelcomeUser");
+       if (WelcomeUser == true) {
+         String Welcome = plugin.getConfig().getString("NewPlayer.WelcomeMessage").replace("%player%", player.getDisplayName());
+          player.sendMessage(plugin.replaceColorMacros(Welcome)); 
+       }
+      }
+    }
+}
