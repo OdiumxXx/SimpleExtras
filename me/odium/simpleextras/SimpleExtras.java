@@ -1,8 +1,12 @@
 package me.odium.simpleextras;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import me.odium.simpleextras.commands.admin;
@@ -12,17 +16,22 @@ import me.odium.simpleextras.commands.boom;
 import me.odium.simpleextras.commands.creative;
 import me.odium.simpleextras.commands.exp;
 import me.odium.simpleextras.commands.findplayer;
+import me.odium.simpleextras.commands.flame;
 import me.odium.simpleextras.commands.fly;
+import me.odium.simpleextras.commands.home;
 import me.odium.simpleextras.commands.ignite;
 import me.odium.simpleextras.commands.levelget;
 import me.odium.simpleextras.commands.levelset;
 import me.odium.simpleextras.commands.levelup;
+import me.odium.simpleextras.commands.mobattack;
 import me.odium.simpleextras.commands.owner;
 import me.odium.simpleextras.commands.ranks;
 import me.odium.simpleextras.commands.se;
 import me.odium.simpleextras.commands.seen;
 import me.odium.simpleextras.commands.seenfirst;
+import me.odium.simpleextras.commands.sethome;
 import me.odium.simpleextras.commands.survival;
+import me.odium.simpleextras.commands.tpb;
 import me.odium.simpleextras.commands.website;
 import me.odium.simpleextras.commands.zoom;
 import me.odium.simpleextras.commands.effects.blind;
@@ -30,6 +39,7 @@ import me.odium.simpleextras.commands.effects.confuse;
 import me.odium.simpleextras.commands.effects.effects;
 import me.odium.simpleextras.commands.effects.fireresistance;
 import me.odium.simpleextras.commands.effects.jump;
+import me.odium.simpleextras.commands.effects.noeffect;
 import me.odium.simpleextras.commands.effects.slow;
 import me.odium.simpleextras.commands.effects.slowdig;
 import me.odium.simpleextras.commands.effects.speed;
@@ -41,10 +51,49 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.FileConfigurationOptions;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class SimpleExtras extends JavaPlugin {
   public Logger log = Logger.getLogger("Minecraft");
   public SimpleExtras plugin;
+
+  
+  //Custom Config  
+  private FileConfiguration HomesConfig = null;
+  private File HomesConfigFile = null;
+
+  public void reloadHomesConfig() {
+    if (HomesConfigFile == null) {
+      HomesConfigFile = new File(getDataFolder(), "HomesConfig.yml");
+    }
+    HomesConfig = YamlConfiguration.loadConfiguration(HomesConfigFile);
+
+    // Look for defaults in the jar
+    InputStream defConfigStream = getResource("HomesConfig.yml");
+    if (defConfigStream != null) {
+      YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+      HomesConfig.setDefaults(defConfig);
+    }
+  }
+  public FileConfiguration getHomesConfig() {
+    if (HomesConfig == null) {
+      reloadHomesConfig();
+    }
+    return HomesConfig;
+  }
+
+  public void saveHomesConfig() {
+    if (HomesConfig == null || HomesConfigFile == null) {
+      return;
+    }
+    try {
+      HomesConfig.save(HomesConfigFile);
+    } catch (IOException ex) {
+      Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + HomesConfigFile, ex);
+    }
+  }
+  // End Custom Config
+
 
   public void onEnable(){
     log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " enabled.");
@@ -56,15 +105,7 @@ public class SimpleExtras extends JavaPlugin {
     // declare new listener
     new PListener(this);
     // declare command executor
-    this.getCommand("admin").setExecutor(new admin(this));
-    this.getCommand("basics").setExecutor(new basics(this));
-    this.getCommand("bed").setExecutor(new bed(this));
-    this.getCommand("boom").setExecutor(new boom(this));
-    this.getCommand("creative").setExecutor(new creative(this));
-    this.getCommand("exp").setExecutor(new exp(this));
     this.getCommand("effects").setExecutor(new effects(this));
-    this.getCommand("findplayer").setExecutor(new findplayer(this));
-    this.getCommand("fly").setExecutor(new fly(this));
     this.getCommand("ignite").setExecutor(new ignite(this));
     this.getCommand("blind").setExecutor(new blind(this));    
     this.getCommand("confuse").setExecutor(new confuse(this));
@@ -74,17 +115,31 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("superdig").setExecutor(new superdig(this));
     this.getCommand("slowdig").setExecutor(new slowdig(this));
     this.getCommand("fireresistance").setExecutor(new fireresistance(this));
+    this.getCommand("exp").setExecutor(new exp(this));
     this.getCommand("levelget").setExecutor(new levelget(this));
     this.getCommand("levelset").setExecutor(new levelset(this));
     this.getCommand("levelup").setExecutor(new levelup(this));
+    this.getCommand("creative").setExecutor(new creative(this));
+    this.getCommand("survival").setExecutor(new survival(this));
+    this.getCommand("boom").setExecutor(new boom(this));
+    this.getCommand("bed").setExecutor(new bed(this));
+    this.getCommand("admin").setExecutor(new admin(this));
+    this.getCommand("basics").setExecutor(new basics(this));
     this.getCommand("owner").setExecutor(new owner(this));
-    this.getCommand("ranks").setExecutor(new ranks(this));
+    this.getCommand("findplayer").setExecutor(new findplayer(this));
+    this.getCommand("fly").setExecutor(new fly(this));
     this.getCommand("se").setExecutor(new se(this));
     this.getCommand("seen").setExecutor(new seen(this));
     this.getCommand("seenfirst").setExecutor(new seenfirst(this));
-    this.getCommand("survival").setExecutor(new survival(this));
+    this.getCommand("ranks").setExecutor(new ranks(this));
+    this.getCommand("mobattack").setExecutor(new mobattack(this));
+    this.getCommand("flame").setExecutor(new flame(this));
+    this.getCommand("home").setExecutor(new home(this));
+    this.getCommand("sethome").setExecutor(new sethome(this));
     this.getCommand("website").setExecutor(new website(this));
+    this.getCommand("tpb").setExecutor(new tpb(this));
     this.getCommand("zoom").setExecutor(new zoom(this));
+    this.getCommand("noeffect").setExecutor(new noeffect(this));
   }
 
   public void onDisable(){ 
@@ -197,16 +252,16 @@ public class SimpleExtras extends JavaPlugin {
 //}
 //  
 
-  //  private boolean isPlayerWithinRadius(Player player, Location loc, double radius)  {
-  //    double x = player.getLocation().getX();
-  //    double y = player.getLocation().getY();
-  //    double z = player.getLocation().getZ();
-  //    double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
-  //    if (distance <= radius)
-  //        return true;
-  //    else
-  //        return false;
-  //}  
+//  private boolean isPlayerWithinRadius(Player player, Location loc, double radius)  {
+//    double x = player.getLocation().getX();
+//    double y = player.getLocation().getY();
+//    double z = player.getLocation().getZ();
+//    double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+//    if (distance <= radius)
+//        return true;
+//    else
+//        return false;
+//}  
 
 //    if(cmd.getName().equalsIgnoreCase("gf")){
 //      if (player == null) {

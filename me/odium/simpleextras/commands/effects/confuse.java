@@ -26,6 +26,12 @@ public class confuse implements CommandExecutor {
     }
 
     if (args.length == 0) {
+      // CHECK FOR EXISTING EFFECT
+      if (player.hasPotionEffect(PotionEffectType.CONFUSION)) {
+        player.removePotionEffect(PotionEffectType.CONFUSION);
+        sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.WHITE + "You have been "+ChatColor.GREEN+"unconfused");
+        return true;
+      }
       player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1200, 1));
       sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been confused for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
       return true;
@@ -35,6 +41,12 @@ public class confuse implements CommandExecutor {
         sender.sendMessage(ChatColor.RED + args[0] + " is not online");
         return true;
       } else {
+        // CHECK FOR EXISTING EFFECT
+        if (target.hasPotionEffect(PotionEffectType.CONFUSION)) {
+          target.removePotionEffect(PotionEffectType.CONFUSION);
+          sender.sendMessage(ChatColor.GREEN + "* " +target+ ChatColor.WHITE + " has been "+ChatColor.GREEN+"unconfused");
+          return true;
+        }
         target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1200, 1));
         sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has been confused for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been confused for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
@@ -44,7 +56,14 @@ public class confuse implements CommandExecutor {
       Player target = Bukkit.getPlayer(args[0]);
       String min = args[1];
       int mintemp = Integer.parseInt( min );
-      int mins = 1200 * mintemp;        
+      int mins = 1200 * mintemp;
+      // CHECK FOR EXISTING EFFECT
+      if (target.hasPotionEffect(PotionEffectType.CONFUSION)) {
+        target.removePotionEffect(PotionEffectType.CONFUSION);
+        sender.sendMessage(ChatColor.GREEN + "* " +target+ ChatColor.WHITE + " has been "+ChatColor.GREEN+"unconfused");
+        return true;
+      }
+
       target.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, mins, 1));
       sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has been confused for " + ChatColor.GREEN + min + ChatColor.WHITE + " minutes");
       target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been confused for " + ChatColor.GREEN + min + ChatColor.WHITE + " minutes");

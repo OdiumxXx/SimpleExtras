@@ -12,7 +12,7 @@
 # Kit format: itemcode, amount
 #  So 5 stone would be 
 # - '1, 5'
-#  
+#
 ranks:
 - '`yThe server ranks are as follows...'
 - '`1- Spectator'

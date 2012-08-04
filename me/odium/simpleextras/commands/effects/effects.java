@@ -22,6 +22,9 @@ public class effects implements CommandExecutor {
       player = (Player) sender;
     }
     sender.sendMessage(ChatColor.GOLD + "[ "+ChatColor.WHITE+ "Player Effects"+ChatColor.GOLD+" ]");
+    if(player == null || player.hasPermission("simpleextras.noeffect")) {
+      sender.sendMessage(ChatColor.RED + "  /noeffect <playername> " + ChatColor.WHITE + "- Cure players effects");    
+    }  
     if(player == null || player.hasPermission("simpleextras.ignite")) {
       sender.sendMessage(ChatColor.RED + "  /ignite <playername> " + ChatColor.WHITE + "- Ignite a player");    
     }        

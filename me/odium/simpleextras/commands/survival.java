@@ -3,6 +3,7 @@ package me.odium.simpleextras.commands;
 
 import me.odium.simpleextras.SimpleExtras;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -35,7 +36,7 @@ public class survival implements CommandExecutor {
         return true;
       }         
     } else if(args.length == 1 && player == null || args.length == 1 && player.hasPermission("simpleextras.survival.other")) {
-      Player target = this.plugin.getServer().getPlayer(args[0]);
+      Player target = Bukkit.getPlayer(args[0]);
       if (target == null) {
         sender.sendMessage(ChatColor.DARK_GREEN + args[0] + ChatColor.WHITE+" is not online.");
         return true;
@@ -43,6 +44,7 @@ public class survival implements CommandExecutor {
         int gm = target.getGameMode().getValue();
         if(gm == 1){
           target.setGameMode(GameMode.SURVIVAL);
+          plugin.log.info(player + "Changed gamemode to SURVIVAL");
           sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + "'s Gamemode has been changed to " + ChatColor.DARK_GREEN + "Survival");
           return true;
         } else {

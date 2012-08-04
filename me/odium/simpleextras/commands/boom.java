@@ -45,7 +45,7 @@ public class boom implements CommandExecutor {
       } else if(args[0] == "-n") {
         if (player == null || player.hasPermission("boom.nuke")) {
           Player target = (Player)sender;
-          float explosionPower = 15;
+          float explosionPower = 20;
           target.getWorld().createExplosion(target.getLocation(), explosionPower);
           player.sendMessage(ChatColor.RED + "Boom!");
           return true;
@@ -93,7 +93,7 @@ public class boom implements CommandExecutor {
       if (player == null || player.hasPermission("boom.nuke")) {
         if(Bukkit.getPlayer(args[1]) != null) {
           Player target = Bukkit.getPlayer(args[1]);
-          explosionPower = 17;
+          explosionPower = 20;
           target.getWorld().createExplosion(target.getLocation(), explosionPower);  
           if (player.getDisplayName() == null) {
             target.sendMessage(ChatColor.RED+"Boom!"+ChatColor.WHITE+" Courtesy of: Console");
@@ -113,7 +113,7 @@ public class boom implements CommandExecutor {
       if (player == null || player.hasPermission("boom.nuke")) {
         if(Bukkit.getPlayer(args[1]) != null) {
           Player target = Bukkit.getPlayer(args[1]);
-          explosionPower = 17;
+          explosionPower = 20;
           target.getWorld().createExplosion(target.getLocation(), explosionPower);
           sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
           return true;

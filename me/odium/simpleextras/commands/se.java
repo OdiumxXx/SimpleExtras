@@ -36,7 +36,10 @@ public class se implements CommandExecutor {
         sender.sendMessage(ChatColor.AQUA + "  /zoom " + ChatColor.WHITE + "- Zoom in/up/down a # of blocks");
       }
       if(player == null || player.hasPermission("simpleextras.effects")) {
-        sender.sendMessage(ChatColor.AQUA + "  /effects " + ChatColor.WHITE + "- Return a list of player effects");
+        sender.sendMessage(ChatColor.AQUA + "  /effects " + ChatColor.WHITE + "- Effects Menu");
+      }
+      if(player == null || player.hasPermission("simpleextras.mobattack")) {
+        sender.sendMessage(ChatColor.AQUA + "  /mobattack menu " + ChatColor.WHITE + "- Mobattack Menu");
       }
       sender.sendMessage(ChatColor.GOLD +" Stand-alone Commands");
       if(player == null || player.hasPermission("simpleextras.findplayer")) {
@@ -52,10 +55,16 @@ public class se implements CommandExecutor {
         sender.sendMessage(ChatColor.DARK_GREEN + "  /survival " + ChatColor.WHITE + "- Change a gamemode to Survival");    
       }
       if(player == null || player.hasPermission("simpleextras.boom")) {
-        sender.sendMessage(ChatColor.DARK_GREEN + "  /boom [dsn] PlayerName " + ChatColor.WHITE + "- Explode a user");   
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /boom [dsn] <player> " + ChatColor.WHITE + "- Explode a user");   
       }
       if(player == null || player.hasPermission("simpleextras.bed")) {
         sender.sendMessage(ChatColor.DARK_GREEN + "  /bed " + ChatColor.WHITE + "- Teleport to your bed spawn");
+      }
+      if(player == null || player.hasPermission("simpleextras.tpb")) {
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /tpb [lg] <player> " + ChatColor.WHITE + "- Teleport with a flourish");
+      }
+      if(player == null || player.hasPermission("simpleextras.flame")) {
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /flame [On/Off] " + ChatColor.WHITE + "- Toggle your flame particles");
       }
       return true;  
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {

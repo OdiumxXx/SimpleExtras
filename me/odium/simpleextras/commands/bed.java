@@ -16,139 +16,149 @@ import org.bukkit.potion.PotionEffectType;
 
 public class bed implements CommandExecutor {   
 
-  public SimpleExtras plugin;
-  public bed(SimpleExtras plugin)  {
-    this.plugin = plugin;
-  }
-
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
-    Player player = null;
-    if (sender instanceof Player) {
-      player = (Player) sender;
+    public SimpleExtras plugin;
+    public bed(SimpleExtras plugin)  {
+        this.plugin = plugin;
     }
 
-
-    if (args.length == 0) {
-      if (player == null) {
-        sender.sendMessage("This command can only be run by a player");
-      } else {
-        
-        if (player.getBedSpawnLocation() != null) { // if bed location exists
-          final Location bedloc = player.getBedSpawnLocation().add(0, 1, 0);
-          
-          if (player.getAllowFlight() == true) { // if player is allowed to fly
-            final Player playertimer = player; 
-            player.setFlying(true);           
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
-
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
-              public void run() { 
-                playertimer.teleport(bedloc);
-              }
-            }, 20L);
-
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // FINISH WARP
-              public void run() {
-                playertimer.setFlying(false);  
-                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
-                playertimer.teleport(bedloc);
-                playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your bed");
-              }
-            }, 30L); 
-            return true;  
-
-          } else if (player.getAllowFlight() == false) { // if player is NOT allowed to fly
-            final Player playertimer = player;
-            player.setAllowFlight(true);
-            player.setFlying(true);            
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
-
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
-              public void run() { 
-                playertimer.teleport(bedloc);
-              }
-            }, 20L);   
-
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {   // FINISH WARP
-              public void run() {
-                playertimer.setFlying(false);
-                playertimer.setAllowFlight(false);
-                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
-                playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your bed");
-              }
-            }, 30L); 
-            return true;
-          }
-
-        } else { // OTHERWISE, IF BED DID NOT EXIST
-          player.sendMessage(ChatColor.YELLOW + " You have not yet slept in a bed");
-          return true;
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
+        Player player = null;
+        if (sender instanceof Player) {
+            player = (Player) sender;
         }
 
-      } 
-    } else if(args.length == 1) { // IF LOOKING FOR THE BED OF ANOTHER USER
-      if (player == null) {
-        sender.sendMessage("This command can only be run by a player");
-      } else {
-        final String target = plugin.myGetPlayerName(args[0]);
-        OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);
-        
-        if (targetplay.hasPlayedBefore() && targetplay.getBedSpawnLocation() != null) { // if bed location exists
-          final Location bedloc = targetplay.getBedSpawnLocation().add(0, 1, 0);
-        
-          if (player.getAllowFlight() == true) { // if player is allowed to fly
-            final Player playertimer = player;
-            player.setFlying(true);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
-              public void run() { 
-                playertimer.teleport(bedloc);
-              }
-            }, 20L);                         
+        if (args.length == 0) {
+            if (player == null) {
+                sender.sendMessage("This command can only be run by a player");
+            } else {
 
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // FINISH WARP
-              public void run() {                
-                playertimer.setFlying(false);
-                playertimer.teleport(bedloc);
-                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
-                playertimer.sendMessage(ChatColor.YELLOW+" "+target + ChatColor.WHITE+" 's bed");
-              }
-            }, 30L); 
-            return true;
+                if (player.getBedSpawnLocation() != null) { // if bed location exists
+                    final Location bedloc = player.getBedSpawnLocation().add(0, 1, 0);
 
-          } else if (player.getAllowFlight() == false) { // if player is NOT allowed it fly
-            final Player playertimer = player;
-            player.setAllowFlight(true);
-            player.setFlying(true); 
-            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
+                    if (player.getAllowFlight() == true) { // if player is allowed to fly
+                        final Player playertimer = player; 
+                        player.setFlying(true);
+                        playertimer.setNoDamageTicks(80);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
+                            public void run() { 
+                                playertimer.teleport(bedloc);
+                            }
+                        }, 20L);
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // FINISH WARP
+                            public void run() {
+                                playertimer.setFallDistance(0);
+                                playertimer.teleport(bedloc);
+                                playertimer.setFlying(false);  
+                                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
+                                playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your bed");
+                            }
+                        }, 30L); 
+                        return true;  
+
+                    } else if (player.getAllowFlight() == false) { // if player is NOT allowed to fly
+                        final Player playertimer = player;
+                        player.setAllowFlight(true);
+                        player.setFlying(true);
+                        playertimer.setNoDamageTicks(80);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
+                            public void run() { 
+                                playertimer.teleport(bedloc);
+                            }
+                        }, 20L);   
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {   // FINISH WARP
+                            public void run() {
+                                playertimer.setFallDistance(0);
+                                playertimer.teleport(bedloc);
+                                playertimer.setFlying(false);
+                                playertimer.setAllowFlight(false);
+                                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
+                                playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your bed");
+                            }
+                        }, 30L); 
+                        return true;
+                    }
+
+                } else { // OTHERWISE, IF BED DID NOT EXIST
+                    player.sendMessage(ChatColor.YELLOW + " You have not yet slept in a bed");
+                    return true;
+                }
+
+            } 
+        } else if(args.length == 1 && player.hasPermission("simpleextras.bed.other")) { // IF LOOKING FOR THE BED OF ANOTHER USER
+
+                final String target = plugin.myGetPlayerName(args[0]);
+                OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);
+
+                if (targetplay.hasPlayedBefore() && targetplay.getBedSpawnLocation() != null) { // if bed location exists
+                    final Location bedloc = targetplay.getBedSpawnLocation().add(0, 1, 0);
+
+                    if (player.getAllowFlight() == true) { // if player is allowed to fly
+                        final Player playertimer = player;
+                        player.setFlying(true);
+                        playertimer.setNoDamageTicks(80);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
+                            public void run() { 
+                                playertimer.teleport(bedloc);
+                            }
+                        }, 20L);                         
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // FINISH WARP
+                            public void run() {                
+                                playertimer.setFallDistance(0);
+                                playertimer.teleport(bedloc);                  
+                                playertimer.setFlying(false);                
+                                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
+                                playertimer.sendMessage(ChatColor.YELLOW+" "+target + ChatColor.WHITE+" 's bed");
+                            }
+                        }, 30L); 
+                        return true;
+
+                    } else if (player.getAllowFlight() == false) { // if player is NOT allowed it fly
+                        final Player playertimer = player;
+                        player.setAllowFlight(true);
+                        player.setFlying(true); 
+                        playertimer.setNoDamageTicks(80);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
+                            public void run() { 
+                                playertimer.teleport(bedloc);
+                            }
+                        }, 20L);
+
+                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // FINISH WARP
+                            public void run() {                
+                                playertimer.setFallDistance(0);
+                                playertimer.teleport(bedloc);
+                                playertimer.setFlying(false);
+                                playertimer.setAllowFlight(false);
+                                playertimer.removePotionEffect(PotionEffectType.CONFUSION);                
+                                playertimer.sendMessage(ChatColor.YELLOW+" "+target + ChatColor.WHITE+" 's bed");
+                            }
+                        }, 30L); 
+                        return true;
+                    }
+                } else { // if bed location does NOT exist
+                    player.sendMessage(ChatColor.WHITE+" "+target + ChatColor.YELLOW+" has not yet slept in a bed");
+                    return true;
+                }
             
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
-              public void run() { 
-                playertimer.teleport(bedloc);
-              }
-            }, 20L);
-
-            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // FINISH WARP
-              public void run() {                
-                playertimer.setFlying(false);
-                playertimer.setAllowFlight(false);
-                playertimer.removePotionEffect(PotionEffectType.CONFUSION);
-                playertimer.teleport(bedloc);
-                playertimer.sendMessage(ChatColor.YELLOW+" "+target + ChatColor.WHITE+" 's bed");
-              }
-            }, 30L); 
-            return true;
-          }
-        } else { // if bed location does NOT exist
-          player.sendMessage(ChatColor.YELLOW+" "+target + ChatColor.WHITE+" has not yet slept in a bed");
+        } else if(args.length == 1 && !player.hasPermission("simpleextras.bed.other")) {
+          sender.sendMessage(ChatColor.RED+"You do not have permission.");
           return true;
         }
-      }
-    }    
 
 
-    return true;    
-  }
+        return true;    
+    }
 
 }

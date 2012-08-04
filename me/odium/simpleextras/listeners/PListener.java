@@ -46,6 +46,13 @@ public class PListener implements Listener {
         for (String item:NewPlayerKit) {       
           String[] itemlist = item.split(", ");
           String mat = itemlist[0];
+          
+//          if (mat.contains(":")) {
+//            String[] matWithData = mat.split(":");
+//            String material = matWithData[0];
+//            String datavalue = matWithData[1];            
+//          }
+          
           String amnt = itemlist[1];
           int material = Integer.parseInt(mat);
           int amount = Integer.parseInt(amnt);
@@ -59,4 +66,14 @@ public class PListener implements Listener {
        }
       }
     }
+    
+//    public void onPlayerTeleportEvent(PlayerTeleportEvent event) {
+//      TeleportCause eventCause = event.getCause();
+//      String eventName = event.getEventName();
+//      if (eventCause.equals("COMMAND")) {
+//        plugin.log.info("Debug: Teleport cause equals Command");
+//        plugin.log.info("Debug: Eventname equals "+eventName);
+//      }
+//    }
+    
 }

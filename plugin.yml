@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.9
+version: 0.9.3
 commands:
    ranks:
       description: Return list of ranks from config
@@ -126,3 +126,28 @@ commands:
       description: Lists the server admins
       permission: simpleextras.listadmin
       usage: /admin
+   tpb:
+      description: Teleport with a flourish
+      permission: simpleextras.tpb
+      usage: /tpb [gl] <player>
+   home:
+      description: Teleport to a saved home location
+      permission: simpleextras.home
+      usage: /home
+   sethome:
+      description: Save your home location
+      permission: simpleextras.sethome
+      usage: /sethome [player]
+   mobattack:
+      description: cause hostile mobs to target a player
+      permission: simpleextras.mobattack
+      usage: /mobattack menu
+   flame:
+      aliases: [flames]
+      description: Dancing flames for your player model
+      permission: simpleextras.flame
+      usage: /flame [on/off] [player]
+   noeffect:
+      description: Remove all effects from a player
+      permission: simpleextras.noeffect
+      usage: /noeffect [player]
