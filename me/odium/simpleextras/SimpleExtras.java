@@ -18,6 +18,7 @@ import me.odium.simpleextras.commands.exp;
 import me.odium.simpleextras.commands.findplayer;
 import me.odium.simpleextras.commands.flame;
 import me.odium.simpleextras.commands.fly;
+import me.odium.simpleextras.commands.grow;
 import me.odium.simpleextras.commands.home;
 import me.odium.simpleextras.commands.ignite;
 import me.odium.simpleextras.commands.levelget;
@@ -140,6 +141,7 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("tpb").setExecutor(new tpb(this));
     this.getCommand("zoom").setExecutor(new zoom(this));
     this.getCommand("noeffect").setExecutor(new noeffect(this));
+    this.getCommand("grow").setExecutor(new grow(this));
   }
 
   public void onDisable(){ 

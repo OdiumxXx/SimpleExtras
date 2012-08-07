@@ -151,3 +151,7 @@ commands:
       description: Remove all effects from a player
       permission: simpleextras.noeffect
       usage: /noeffect [player]
+   grow:
+      description: Grow saplings in front of player
+      permission: simpleextras.grow
+      usage: /grow
