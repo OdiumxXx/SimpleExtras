@@ -41,3 +41,4 @@ NewPlayer:
     - '260, 3'
 owner: ServerOwner
 website: http://YourWebAddressHere.com
+HomeEffectDuration: 3

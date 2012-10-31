@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.9.3
+version: 0.9.5
 commands:
    ranks:
       description: Return list of ranks from config
@@ -114,6 +114,10 @@ commands:
       description: confuse a player
       permission: simpleextras.superdig
       usage: /superdig <playername> [mins]
+   waterbreathing:
+      description: Grant a player water breathing
+      permission: simpleextras.waterbreathing
+      usage: /waterbreathing <playername> [mins]
    gf:
       description: fireball
       permission: simpleextras.fireball
@@ -155,3 +159,12 @@ commands:
       description: Grow saplings in front of player
       permission: simpleextras.grow
       usage: /grow
+   grenade:
+      description: Toggle snowball grenades
+      permission: simpleextras.grenade
+      usage: /grenade
+   colours:
+      aliases: [color]
+      description: Return colour codes
+      permission: simpleextras.colourcodes
+      usage: /colours

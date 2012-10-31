@@ -94,7 +94,7 @@ public class bed implements CommandExecutor {
         } else if(args.length == 1 && player.hasPermission("simpleextras.bed.other")) { // IF LOOKING FOR THE BED OF ANOTHER USER
 
                 final String target = plugin.myGetPlayerName(args[0]);
-                OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);
+                OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);                
 
                 if (targetplay.hasPlayedBefore() && targetplay.getBedSpawnLocation() != null) { // if bed location exists
                     final Location bedloc = targetplay.getBedSpawnLocation().add(0, 1, 0);

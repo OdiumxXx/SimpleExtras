@@ -25,6 +25,9 @@ public class home implements CommandExecutor {
         if (sender instanceof Player) {
             player = (Player) sender;
         }
+        
+        int fwarp = plugin.getConfig().getInt("HomeEffectDuration");
+        final int finishHome =  fwarp * 20;
 
         if (args.length == 0) {
             String loc = plugin.getHomesConfig().getString(player.getName().toLowerCase()+".location");
@@ -40,13 +43,13 @@ public class home implements CommandExecutor {
                 double z = Double.parseDouble(vals[3]);
                 final float f = Float.parseFloat(vals[4]);
                 final float p = Float.parseFloat(vals[5]);
-                final Location locc = new Location(world, x, y, z, f, p);
+                final Location locc = new Location(world, x, y+1, z, f, p);
 
 
                 if (player.getAllowFlight() == true) { // if player is allowed to fly
                     final Player playertimer = player; 
                     player.setFlying(true);
-                    playertimer.setNoDamageTicks(80);
+                    playertimer.setNoDamageTicks(60 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
@@ -64,14 +67,14 @@ public class home implements CommandExecutor {
                             playertimer.setFlying(false);
                             playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your home");
                         }
-                    }, 40L); 
+                    }, finishHome); 
                     return true;  
 
                 } else if (player.getAllowFlight() == false) { // if player is NOT allowed to fly
                     final Player playertimer = player;
                     player.setAllowFlight(true);
                     player.setFlying(true);            
-                    playertimer.setNoDamageTicks(80);
+                    playertimer.setNoDamageTicks(60 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
@@ -79,7 +82,7 @@ public class home implements CommandExecutor {
                             playertimer.teleport(locc);
                             playertimer.setFlying(true);
                         }
-                    }, 20L);   
+                    }, 40L);   
 
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {   // FINISH WARP
                         public void run() {
@@ -90,14 +93,15 @@ public class home implements CommandExecutor {
                             playertimer.removePotionEffect(PotionEffectType.CONFUSION);
                             playertimer.sendMessage(ChatColor.YELLOW + " You have been returned to your home");
                         }
-                    }, 40L); 
+                    }, finishHome); 
                     return true;
                 }
             }
 
         } else if (args.length == 1 && player.hasPermission("simpleextras.home.other")) {
-            String loc = plugin.getHomesConfig().getString(args[0].toLowerCase()+".location");
-            final String targetname = args[0];
+            
+            final String targetname = plugin.myGetPlayerName(args[0]);
+            String loc = plugin.getHomesConfig().getString(targetname.toLowerCase()+".location");
             if (loc == null) {
                 sender.sendMessage(args[0]+ChatColor.YELLOW+" does not have a home location");
                 return true;                
@@ -110,13 +114,13 @@ public class home implements CommandExecutor {
                 double z = Double.parseDouble(vals[3]);
                 final float f = Float.parseFloat(vals[4]);
                 final float p = Float.parseFloat(vals[5]);
-                final Location locc = new Location(world, x, y, z, f, p);
+                final Location locc = new Location(world, x, y+1, z, f, p);
 
 
                 if (player.getAllowFlight() == true) { // if player is allowed to fly
                     final Player playertimer = player; 
                     player.setFlying(true);           
-                    playertimer.setNoDamageTicks(80);
+                    playertimer.setNoDamageTicks(40 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
@@ -132,13 +136,14 @@ public class home implements CommandExecutor {
                             playertimer.teleport(locc);
                             playertimer.sendMessage(ChatColor.YELLOW + " You have been warped to "+targetname+"'s home");
                         }
-                    }, 40L); 
+                    }, finishHome); 
                     return true;  
 
                 } else if (player.getAllowFlight() == false) { // if player is NOT allowed to fly
                     final Player playertimer = player;
                     player.setAllowFlight(true);
-                    player.setFlying(true);            
+                    player.setFlying(true);       
+                    playertimer.setNoDamageTicks(40 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
                     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
@@ -157,7 +162,7 @@ public class home implements CommandExecutor {
                             playertimer.removePotionEffect(PotionEffectType.CONFUSION);
                             playertimer.sendMessage(ChatColor.YELLOW + " You have been warped to "+targetname+"'s home");
                         }
-                    }, 40L); 
+                    }, finishHome); 
                     return true;
                 }
 

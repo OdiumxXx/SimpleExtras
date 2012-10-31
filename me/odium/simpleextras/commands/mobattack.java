@@ -61,7 +61,12 @@ public class mobattack implements CommandExecutor {
 
       // TARGET PLAYER (NO RADIUS)
     } else if (args.length == 1) {
+      if (Bukkit.getPlayer(args[0]) == null) {
+        sender.sendMessage(ChatColor.RED+args[0]+" not online");
+        return true;
+      }      
       Player target = Bukkit.getPlayer(args[0]);
+      
       for (final Entity entity : target.getNearbyEntities(100, 100, 100)) {
         if (entity != null && entity instanceof Creature) {
           final Creature creature = ((Creature) entity);

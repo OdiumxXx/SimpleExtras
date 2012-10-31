@@ -5,6 +5,7 @@ import me.odium.simpleextras.SimpleExtras;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,6 +55,7 @@ public class boom implements CommandExecutor {
         Player target = Bukkit.getPlayer(args[0]);
         float explosionPower = 0;
         target.getWorld().createExplosion(target.getLocation(), explosionPower);
+        target.getWorld().playEffect(target.getLocation(), Effect.SMOKE, 5);
         if (player == null) {
           target.sendMessage(ChatColor.RED + "Boom! " + ChatColor.WHITE + "Courtesy of: Console"); // error          
           sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + " Has been peacefully exploded");  
@@ -115,7 +117,7 @@ public class boom implements CommandExecutor {
           Player target = Bukkit.getPlayer(args[1]);
           explosionPower = 20;
           target.getWorld().createExplosion(target.getLocation(), explosionPower);
-          sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been Nuked");  
+          sender.sendMessage(ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE +  " has been silently Nuked");  
           return true;
         } else if(Bukkit.getPlayer(args[1]) == null) {           
           sender.sendMessage(ChatColor.DARK_GREEN + args[1] + ChatColor.WHITE+" is not online.");

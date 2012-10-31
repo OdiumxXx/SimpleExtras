@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,11 +15,13 @@ import me.odium.simpleextras.commands.admin;
 import me.odium.simpleextras.commands.basics;
 import me.odium.simpleextras.commands.bed;
 import me.odium.simpleextras.commands.boom;
+import me.odium.simpleextras.commands.colours;
 import me.odium.simpleextras.commands.creative;
 import me.odium.simpleextras.commands.exp;
 import me.odium.simpleextras.commands.findplayer;
 import me.odium.simpleextras.commands.flame;
 import me.odium.simpleextras.commands.fly;
+import me.odium.simpleextras.commands.grenade;
 import me.odium.simpleextras.commands.grow;
 import me.odium.simpleextras.commands.home;
 import me.odium.simpleextras.commands.ignite;
@@ -35,6 +39,7 @@ import me.odium.simpleextras.commands.survival;
 import me.odium.simpleextras.commands.tpb;
 import me.odium.simpleextras.commands.website;
 import me.odium.simpleextras.commands.zoom;
+import me.odium.simpleextras.commands.effects.WaterBreathing;
 import me.odium.simpleextras.commands.effects.blind;
 import me.odium.simpleextras.commands.effects.confuse;
 import me.odium.simpleextras.commands.effects.effects;
@@ -54,10 +59,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.FileConfigurationOptions;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+
+
 public class SimpleExtras extends JavaPlugin {
   public Logger log = Logger.getLogger("Minecraft");
   public SimpleExtras plugin;
-
+  public static Map<Player,Boolean> Snowball_Grenade = new HashMap<Player,Boolean>();
   
   //Custom Config  
   private FileConfiguration HomesConfig = null;
@@ -116,6 +123,7 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("superdig").setExecutor(new superdig(this));
     this.getCommand("slowdig").setExecutor(new slowdig(this));
     this.getCommand("fireresistance").setExecutor(new fireresistance(this));
+    this.getCommand("waterbreathing").setExecutor(new WaterBreathing(this));
     this.getCommand("exp").setExecutor(new exp(this));
     this.getCommand("levelget").setExecutor(new levelget(this));
     this.getCommand("levelset").setExecutor(new levelset(this));
@@ -135,13 +143,20 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("ranks").setExecutor(new ranks(this));
     this.getCommand("mobattack").setExecutor(new mobattack(this));
     this.getCommand("flame").setExecutor(new flame(this));
-    this.getCommand("home").setExecutor(new home(this));
-    this.getCommand("sethome").setExecutor(new sethome(this));
+    // Compatability check for users who want to use CommandBook's /home command
+    if (this.getCommand("home") != null) {
+    	this.getCommand("home").setExecutor(new home(this));
+    }
+    if (this.getCommand("sethome") != null) {
+    	this.getCommand("sethome").setExecutor(new sethome(this));
+    }
     this.getCommand("website").setExecutor(new website(this));
     this.getCommand("tpb").setExecutor(new tpb(this));
     this.getCommand("zoom").setExecutor(new zoom(this));
     this.getCommand("noeffect").setExecutor(new noeffect(this));
     this.getCommand("grow").setExecutor(new grow(this));
+    this.getCommand("grenade").setExecutor(new grenade(this));
+    this.getCommand("colours").setExecutor(new colours(this));
   }
 
   public void onDisable(){ 

@@ -26,7 +26,7 @@ public class jump implements CommandExecutor {
     }
 
     if (args.length == 0) {
-      player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 3));
+      player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 2));
       sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
       return true;
     } else if (args.length == 1) {
@@ -35,7 +35,7 @@ public class jump implements CommandExecutor {
         sender.sendMessage(ChatColor.RED + args[0] + " is not online");
         return true;
       } else {
-        target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 3));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 1200, 2));
         sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been given jump x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         return true;
@@ -45,7 +45,7 @@ public class jump implements CommandExecutor {
       String min = args[1];
       int mintemp = Integer.parseInt( min );
       int mins = 1200 * mintemp;        
-      target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, mins, 3));
+      target.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, mins, 2));
       sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has been given jump x2 for " + ChatColor.GREEN + min + ChatColor.WHITE + " minutes");
       target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been given jump x2 for " + ChatColor.GREEN + min + ChatColor.WHITE + " minutes");
       return true;

@@ -48,6 +48,7 @@ public class se implements CommandExecutor {
       sender.sendMessage(ChatColor.DARK_GREEN + "  /ranks " + ChatColor.WHITE + "- Return a list of server ranks");
       sender.sendMessage(ChatColor.DARK_GREEN + "  /basics " + ChatColor.WHITE + "- Return a list of server basic");
       sender.sendMessage(ChatColor.DARK_GREEN + "  /admin " + ChatColor.WHITE + "- Return a list of server Admin");
+      sender.sendMessage(ChatColor.DARK_GREEN + "  /Colour " + ChatColor.WHITE + "- Return a list of Colour Codes");
       if(player == null || player.hasPermission("simpleextras.creative")) {
         sender.sendMessage(ChatColor.DARK_GREEN + "  /creative " + ChatColor.WHITE + "- Change a gamemode to Creative");    
       }
@@ -66,6 +67,12 @@ public class se implements CommandExecutor {
       if(player == null || player.hasPermission("simpleextras.flame")) {
         sender.sendMessage(ChatColor.DARK_GREEN + "  /flame [On/Off] " + ChatColor.WHITE + "- Toggle your flame particles");
       }
+      if(player == null || player.hasPermission("simpleextras.grow")) {
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /grow [-t/-c/-p/-m] [Radius] " + ChatColor.WHITE + "- Grow saplings/seedlings");
+      }
+      if(player == null || player.hasPermission("simpleextras.grenade")) {
+          sender.sendMessage(ChatColor.DARK_GREEN + "  /grenade [-d]" + ChatColor.WHITE + "- Activate snowball grenades");
+        }
       return true;  
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
       if(player == null || player.hasPermission("simpleextras.reload")) {

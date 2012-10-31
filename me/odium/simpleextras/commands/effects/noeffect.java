@@ -31,7 +31,8 @@ public class noeffect implements CommandExecutor {
       player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
       player.removePotionEffect(PotionEffectType.JUMP);
       player.removePotionEffect(PotionEffectType.SPEED);
-      player.removePotionEffect(PotionEffectType.FAST_DIGGING);      
+      player.removePotionEffect(PotionEffectType.FAST_DIGGING);
+      player.removePotionEffect(PotionEffectType.WATER_BREATHING);  
       sender.sendMessage(ChatColor.GREEN+"Effects Removed");
       return true;
     } else if (args.length == 1) {
@@ -48,6 +49,7 @@ public class noeffect implements CommandExecutor {
       target.removePotionEffect(PotionEffectType.JUMP);
       target.removePotionEffect(PotionEffectType.SPEED);
       target.removePotionEffect(PotionEffectType.FAST_DIGGING);
+      player.removePotionEffect(PotionEffectType.WATER_BREATHING);
       sender.sendMessage(ChatColor.GREEN+"Effects Removed from "+target.getDisplayName());
       return true;
     }
