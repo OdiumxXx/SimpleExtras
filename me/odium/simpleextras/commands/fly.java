@@ -80,7 +80,13 @@ public class fly implements CommandExecutor {
         int mins = 1200 * mintemp;
         int warningmins = 1000 * mintemp;
         if(canfly == true) {
-          sender.sendMessage("Already allowed to fly, timer set anyway.");        
+          sender.sendMessage("Already allowed to fly, timer set anyway.");       
+          
+          plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
+            public void run() {       
+              target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight is about to " + ChatColor.RED +  "expire! ");              
+            }
+          }, warningmins); 
 
           plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
             public void run() {
