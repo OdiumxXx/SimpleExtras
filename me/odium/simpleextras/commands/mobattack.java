@@ -57,6 +57,7 @@ public class mobattack implements CommandExecutor {
       sender.sendMessage(ChatColor.YELLOW+" /mobattack -e <player> - "+ChatColor.WHITE+"Enderman Assasins");
       sender.sendMessage(ChatColor.YELLOW+" /mobattack -p <player> - "+ChatColor.WHITE+"PigZombie Assasins");
       sender.sendMessage(ChatColor.YELLOW+" /mobattack -s <player> - "+ChatColor.WHITE+"Spider Assasins");      
+      sender.sendMessage(ChatColor.YELLOW+" /mobattack -w <player> - "+ChatColor.WHITE+"Wither Assasin");
       return true;
 
       // TARGET PLAYER (NO RADIUS)
@@ -204,6 +205,9 @@ public class mobattack implements CommandExecutor {
       sender.sendMessage(ChatColor.GREEN+""+CaveSpiderCount+ChatColor.YELLOW+" minions have been unleased upon "+ChatColor.GREEN+target.getName());
       return true;
 
+      
+      
+      
       // LOCAL ATTACK (WITH RADIUS)
     } else if (args.length == 2) {
       if (Bukkit.getPlayer(args[0]) == null) {

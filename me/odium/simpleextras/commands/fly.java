@@ -14,7 +14,7 @@ public class fly implements CommandExecutor {
 
   public SimpleExtras plugin;
   public fly(SimpleExtras plugin)  {
-    plugin.plugin = plugin;
+    this.plugin = plugin;
   }
 
   public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args)  {    
@@ -47,12 +47,16 @@ public class fly implements CommandExecutor {
           target.setAllowFlight(false);          
           target.setFlying(false);
           sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + targetname);
-          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED+ "disabled");
+          if (sender != target) {
+            target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED+ "disabled");  
+          }          
           return true;
         } else if(canfly == false) {
           target.setAllowFlight(true);
           sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN +  targetname);
-          target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled");
+          if (sender != target) {
+            target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled");  
+          }         
           return true;
         }
       }
@@ -62,37 +66,53 @@ public class fly implements CommandExecutor {
         sender.sendMessage(ChatColor.RED + args[0] + " is not online");
         return true;
       } else {
-//        final Player player1 = player;
+        //        final Player player1 = player;
         Boolean canfly = target1.getAllowFlight();
         String targetname = target1.getDisplayName();
         String min = args[1];
         int mintemp = Integer.parseInt( min );
-        int mins = 1200 * mintemp;  
+        int mins = 1200 * mintemp;
+        int warningmins = 1000 * mintemp;
         if(canfly == true) {
           sender.sendMessage("Already allowed to fly, timer set anyway.");        
 
-          Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Bukkit.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
+          plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
             public void run() {
               target1.setAllowFlight(false);          
               target1.setFlying(false);
               sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + target1.getDisplayName());
+              if (sender != target1) {
+                target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");  
+              }
+                            
             }
           }, mins);          
           return true;
 
         } else if(canfly == false) {
           sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN +  targetname + ChatColor.WHITE + " for " + min + " minutes");
-          target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + min + ChatColor.WHITE + " minutes");
+          if (sender != target1) {
+            target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.GREEN +  "enabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + min + ChatColor.WHITE + " minutes");  
+          }          
           target1.setAllowFlight(true);          
           target1.setFlying(true);
 
-          Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Bukkit.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
+          plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
+            public void run() {       
+              target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight is about to " + ChatColor.RED +  "expire! ");              
+            }
+          }, warningmins);        
+
+          plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {
             public void run() {       
               target1.setAllowFlight(false);          
               target1.setFlying(false);
               String targetname = target1.getDisplayName();
-              target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");
-              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + targetname);
+              target1.sendMessage(ChatColor.GOLD + "* " + ChatColor.RED + "Flight " + ChatColor.RED +  "disabled ");     
+              if (sender != target1) {
+              sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "Flight " + ChatColor.RED +  "disabled " + ChatColor.WHITE + "for " + ChatColor.DARK_GREEN + targetname);  
+              }
+
             }
           }, mins);
           return true;

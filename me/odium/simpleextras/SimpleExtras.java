@@ -28,6 +28,7 @@ import me.odium.simpleextras.commands.ignite;
 import me.odium.simpleextras.commands.levelget;
 import me.odium.simpleextras.commands.levelset;
 import me.odium.simpleextras.commands.levelup;
+import me.odium.simpleextras.commands.missile;
 import me.odium.simpleextras.commands.mobattack;
 import me.odium.simpleextras.commands.owner;
 import me.odium.simpleextras.commands.ranks;
@@ -44,15 +45,23 @@ import me.odium.simpleextras.commands.effects.blind;
 import me.odium.simpleextras.commands.effects.confuse;
 import me.odium.simpleextras.commands.effects.effects;
 import me.odium.simpleextras.commands.effects.fireresistance;
+import me.odium.simpleextras.commands.effects.hunger;
+import me.odium.simpleextras.commands.effects.invisible;
 import me.odium.simpleextras.commands.effects.jump;
+import me.odium.simpleextras.commands.effects.nightvision;
 import me.odium.simpleextras.commands.effects.noeffect;
+import me.odium.simpleextras.commands.effects.poison;
+import me.odium.simpleextras.commands.effects.regeneration;
 import me.odium.simpleextras.commands.effects.slow;
 import me.odium.simpleextras.commands.effects.slowdig;
 import me.odium.simpleextras.commands.effects.speed;
+import me.odium.simpleextras.commands.effects.strength;
 import me.odium.simpleextras.commands.effects.superdig;
+import me.odium.simpleextras.commands.effects.weakness;
 import me.odium.simpleextras.listeners.PListener;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -65,7 +74,13 @@ public class SimpleExtras extends JavaPlugin {
   public Logger log = Logger.getLogger("Minecraft");
   public SimpleExtras plugin;
   public static Map<Player,Boolean> Snowball_Grenade = new HashMap<Player,Boolean>();
-  
+  public static Map<Player,Boolean> Arrow_Grenade = new HashMap<Player,Boolean>();
+  public Map<Location,Integer> Blast_Mode = new HashMap<Location,Integer>();
+  // 0 = Harmless
+  // 1 = Entities & NOT Blocks
+  // 2 = Default
+  // 3 = No Damage Player & No Yield
+  // 4 = Damage Player & No Yield
   //Custom Config  
   private FileConfiguration HomesConfig = null;
   private File HomesConfigFile = null;
@@ -124,6 +139,13 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("slowdig").setExecutor(new slowdig(this));
     this.getCommand("fireresistance").setExecutor(new fireresistance(this));
     this.getCommand("waterbreathing").setExecutor(new WaterBreathing(this));
+    this.getCommand("hunger").setExecutor(new hunger(this));
+    this.getCommand("invisible").setExecutor(new invisible(this));
+    this.getCommand("nightvision").setExecutor(new nightvision(this));
+    this.getCommand("weakness").setExecutor(new weakness(this));
+    this.getCommand("strength").setExecutor(new strength(this));
+    this.getCommand("regeneration").setExecutor(new regeneration(this));
+    this.getCommand("poison").setExecutor(new poison(this));
     this.getCommand("exp").setExecutor(new exp(this));
     this.getCommand("levelget").setExecutor(new levelget(this));
     this.getCommand("levelset").setExecutor(new levelset(this));
@@ -156,6 +178,7 @@ public class SimpleExtras extends JavaPlugin {
     this.getCommand("noeffect").setExecutor(new noeffect(this));
     this.getCommand("grow").setExecutor(new grow(this));
     this.getCommand("grenade").setExecutor(new grenade(this));
+    this.getCommand("missile").setExecutor(new missile(this));
     this.getCommand("colours").setExecutor(new colours(this));
   }
 
@@ -248,6 +271,11 @@ public class SimpleExtras extends JavaPlugin {
     str = str.replace("`w", ChatColor.WHITE.toString());        
     return str;
   }
+  
+  public void CustomExplode(Player target, Integer ExplosionPower) {
+    target.getWorld().createExplosion(target.getLocation(), ExplosionPower);
+  }
+  
 }
 
 //public void flyDisable(final Player target1, int mins) {

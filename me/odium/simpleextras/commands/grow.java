@@ -146,7 +146,7 @@ public class grow implements CommandExecutor {
     player.sendMessage(ChatColor.GREEN+"Grown "+pumpkins+" pumpkins");
     return true;
   }
-  
+
   public boolean growCarrots(Player player, String[] args, int radius) {
     Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
     int carrots = 0;    
@@ -172,7 +172,7 @@ public class grow implements CommandExecutor {
     player.sendMessage(ChatColor.GREEN+"Grown "+carrots+" carrots");
     return true;
   }
-  
+
   public boolean growPotatoes(Player player, String[] args, int radius) {
     Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
     int Potatoes = 0;    
@@ -277,7 +277,18 @@ public class grow implements CommandExecutor {
         growCarrots(player, args, radius);
         return true;
       }
+
+
+
     } else if (args.length == 1 && !args[0].equalsIgnoreCase("help")) {
+
+      for (char c : args[0].toCharArray()) {       
+        if (!Character.isDigit(c)) {
+          sender.sendMessage(ChatColor.WHITE+args[0]+ChatColor.RED+" not a Radius or recognized paramater [See /grow help]");
+          return true;
+        }
+      }
+
       radius = Integer.parseInt(args[0]);
       growTrees(player, args, radius);
       growCrops(player, args, radius);
@@ -286,6 +297,8 @@ public class grow implements CommandExecutor {
       growCarrots(player, args, radius);
       growPotatoes(player, args, radius);
       return true;
+
+
     } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
       sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+"Grow"+ChatColor.GOLD+" ]");
       sender.sendMessage(ChatColor.YELLOW+"[] = Optional");
@@ -298,7 +311,10 @@ public class grow implements CommandExecutor {
       sender.sendMessage(" -po (Potatoes)");
       sender.sendMessage(" -ca (Carrots)");      
       return true;
+
+
     }
     return true;
   }
+
 }

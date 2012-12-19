@@ -45,10 +45,10 @@ public class creative implements CommandExecutor {
         if(gm == 0){
           target.setGameMode(GameMode.CREATIVE);
           plugin.log.info(player + "Changed gamemode to CREATIVE");
-          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + "'s Gamemode has been changed to " + ChatColor.DARK_GREEN + "Creative");
+          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + "'s"+ChatColor.WHITE + " Gamemode has been changed to " + ChatColor.DARK_GREEN + "Creative");
           return true;
         } else {
-          sender.sendMessage(ChatColor.RED + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + "'s Gamemode is already set to " + ChatColor.DARK_GREEN + "Creative");
+          sender.sendMessage(ChatColor.RED + "* " + ChatColor.DARK_GREEN + target.getDisplayName() +"'s"+ ChatColor.WHITE + " Gamemode is already set to " + ChatColor.DARK_GREEN + "Creative");
           return true; 
         }
       }

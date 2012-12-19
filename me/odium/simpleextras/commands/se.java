@@ -68,11 +68,14 @@ public class se implements CommandExecutor {
         sender.sendMessage(ChatColor.DARK_GREEN + "  /flame [On/Off] " + ChatColor.WHITE + "- Toggle your flame particles");
       }
       if(player == null || player.hasPermission("simpleextras.grow")) {
-        sender.sendMessage(ChatColor.DARK_GREEN + "  /grow [-t/-c/-p/-m] [Radius] " + ChatColor.WHITE + "- Grow saplings/seedlings");
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /grow [help] [Radius] " + ChatColor.WHITE + "- Grow saplings/seedlings");
       }
       if(player == null || player.hasPermission("simpleextras.grenade")) {
-          sender.sendMessage(ChatColor.DARK_GREEN + "  /grenade [-d]" + ChatColor.WHITE + "- Activate snowball grenades");
+          sender.sendMessage(ChatColor.DARK_GREEN + "  /grenade [-d] [user]" + ChatColor.WHITE + "- Activate snowball grenades");
         }
+      if(player == null || player.hasPermission("simpleextras.missile")) {
+        sender.sendMessage(ChatColor.DARK_GREEN + "  /missile [-d] [user]" + ChatColor.WHITE + "- Activate arrow missiles");
+      }
       return true;  
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
       if(player == null || player.hasPermission("simpleextras.reload")) {

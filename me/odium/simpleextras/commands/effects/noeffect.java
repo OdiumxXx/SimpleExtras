@@ -32,7 +32,12 @@ public class noeffect implements CommandExecutor {
       player.removePotionEffect(PotionEffectType.JUMP);
       player.removePotionEffect(PotionEffectType.SPEED);
       player.removePotionEffect(PotionEffectType.FAST_DIGGING);
-      player.removePotionEffect(PotionEffectType.WATER_BREATHING);  
+      player.removePotionEffect(PotionEffectType.WATER_BREATHING);
+      player.removePotionEffect(PotionEffectType.INVISIBILITY);
+      player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+      player.removePotionEffect(PotionEffectType.HUNGER);
+      player.removePotionEffect(PotionEffectType.WEAKNESS);
+      player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
       sender.sendMessage(ChatColor.GREEN+"Effects Removed");
       return true;
     } else if (args.length == 1) {
@@ -49,7 +54,12 @@ public class noeffect implements CommandExecutor {
       target.removePotionEffect(PotionEffectType.JUMP);
       target.removePotionEffect(PotionEffectType.SPEED);
       target.removePotionEffect(PotionEffectType.FAST_DIGGING);
-      player.removePotionEffect(PotionEffectType.WATER_BREATHING);
+      target.removePotionEffect(PotionEffectType.WATER_BREATHING);
+      target.removePotionEffect(PotionEffectType.INVISIBILITY);
+      target.removePotionEffect(PotionEffectType.NIGHT_VISION);
+      target.removePotionEffect(PotionEffectType.HUNGER);
+      target.removePotionEffect(PotionEffectType.WEAKNESS);
+      target.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
       sender.sendMessage(ChatColor.GREEN+"Effects Removed from "+target.getDisplayName());
       return true;
     }

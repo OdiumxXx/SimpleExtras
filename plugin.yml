@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.9.5
+version: 0.9.6
 commands:
    ranks:
       description: Return list of ranks from config
@@ -84,40 +84,68 @@ commands:
    speed:
       description: give a player speed x2
       permission: simpleextras.speed
-      usage: /speed <playername> [mins]
+      usage: /speed [playername] [mins]
    blind:
       description: blind a player
       permission: simpleextras.blind
-      usage: /blind <playername> [mins]
+      usage: /blind [playername] [mins]
    jump:
       description: give a player jump x2
       permission: simpleextras.jump
-      usage: /jump <playername> [mins]
+      usage: /jump [playername] [mins]
    confuse:
       description: confuse a player
       permission: simpleextras.confuse
-      usage: /confuse <playername> [mins]
+      usage: /confuse [playername] [mins]
    slow:
       description: slow a player
       permission: simpleextras.slow
-      usage: /slow <playername> [mins]
+      usage: /slow [playername] [mins]
    slowdig:
       description: slow a players digging
       permission: simpleextras.slowdig
-      usage: /slow <playername> [mins]
+      usage: /slow [playername] [mins]
    fireresistance:
       aliases: [fireresist]
       description: give a player fire resist
       permission: simpleextras.fireresist
-      usage: /slow <playername> [mins]
+      usage: /slow [playername] [mins]
    superdig:
       description: confuse a player
       permission: simpleextras.superdig
-      usage: /superdig <playername> [mins]
+      usage: /superdig [playername] [mins]
    waterbreathing:
-      description: Grant a player water breathing
+      description: Grant a player Water Breathing
       permission: simpleextras.waterbreathing
-      usage: /waterbreathing <playername> [mins]
+      usage: /waterbreathing [playername] [mins]
+   invisible:
+      description: Grant a player invisibility
+      permission: simpleextras.invisible
+      usage: /invisible [playername] [mins]
+   nightvision:
+      description: Grant a player Night Vision
+      permission: simpleextras.nightvision
+      usage: /nightvision [playername] [mins]
+   hunger:
+      description: Make a player hungry
+      permission: simpleextras.hunger
+      usage: /hunger [playername] [mins]
+   weakness:
+      description: Make a player weak
+      permission: simpleextras.weakness
+      usage: /weakness [playername] [mins]
+   strength:
+      description: Make a player stronger
+      permission: simpleextras.strength
+      usage: /strength [playername] [mins]
+   regeneration:
+      description: Grant a player regeneration
+      permission: simpleextras.regeneration
+      usage: /regeneration [playername] [mins]
+   poison:
+      description: Poison a player
+      permission: simpleextras.poison
+      usage: /poison [playername] [mins]
    gf:
       description: fireball
       permission: simpleextras.fireball
@@ -162,9 +190,13 @@ commands:
    grenade:
       description: Toggle snowball grenades
       permission: simpleextras.grenade
-      usage: /grenade
+      usage: /grenade [-d] [user]
+   missile:
+      description: Toggle arrow missiles
+      permission: simpleextras.missile
+      usage: /missile [-d] [user]
    colours:
-      aliases: [color]
+      aliases: [colors]
       description: Return colour codes
       permission: simpleextras.colourcodes
       usage: /colours

@@ -52,14 +52,14 @@ public class home implements CommandExecutor {
                     playertimer.setNoDamageTicks(60 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {  // TELEPORT AFTER 1 TICK
                         public void run() { 
                             playertimer.teleport(locc);
                             playertimer.setFlying(true);
                         }
                     }, 20L);
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // FINISH WARP
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {  // FINISH WARP
                         public void run() {                     
                             playertimer.setFallDistance(0);
                             playertimer.teleport(locc);
@@ -77,14 +77,14 @@ public class home implements CommandExecutor {
                     playertimer.setNoDamageTicks(60 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() { // TELEPORT AFTER 1 TICK
                         public void run() { 
                             playertimer.teleport(locc);
-                            playertimer.setFlying(true);
+//                            playertimer.setFlying(true);
                         }
-                    }, 40L);   
+                    }, 20L);   
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {   // FINISH WARP
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {   // FINISH WARP
                         public void run() {
                             playertimer.setFallDistance(0);
                             playertimer.teleport(locc);                        
@@ -123,13 +123,13 @@ public class home implements CommandExecutor {
                     playertimer.setNoDamageTicks(40 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // TELEPORT AFTER 1 TICK
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {  // TELEPORT AFTER 1 TICK
                         public void run() { 
                             playertimer.teleport(locc);
                         }
                     }, 20L);
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {  // FINISH WARP
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {  // FINISH WARP
                         public void run() {
                             playertimer.setFlying(false);  
                             playertimer.removePotionEffect(PotionEffectType.CONFUSION);
@@ -146,13 +146,13 @@ public class home implements CommandExecutor {
                     playertimer.setNoDamageTicks(40 + finishHome);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 600, 10)); // BEGIN WARP
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() { // TELEPORT AFTER 1 TICK
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() { // TELEPORT AFTER 1 TICK
                         public void run() { 
                             playertimer.teleport(locc);
                         }
                     }, 20L);   
 
-                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {   // FINISH WARP
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin.getServer().getPluginManager().getPlugin("SimpleExtras"), new Runnable() {   // FINISH WARP
                         public void run() {
 
                             playertimer.setFallDistance(0);

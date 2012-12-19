@@ -45,10 +45,10 @@ public class survival implements CommandExecutor {
         if(gm == 1){
           target.setGameMode(GameMode.SURVIVAL);
           plugin.log.info(player + "Changed gamemode to SURVIVAL");
-          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + "'s Gamemode has been changed to " + ChatColor.DARK_GREEN + "Survival");
+          sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + "'s" + ChatColor.WHITE + " Gamemode has been changed to " + ChatColor.DARK_GREEN + "Survival");
           return true;
         } else {
-          sender.sendMessage(ChatColor.RED + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + ChatColor.WHITE + "'s Gamemode is already set to " + ChatColor.DARK_GREEN + "Survival");
+          sender.sendMessage(ChatColor.RED + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + "'s" + ChatColor.WHITE + " Gamemode is already set to " + ChatColor.DARK_GREEN + "Survival");
           return true; 
         }
       }
