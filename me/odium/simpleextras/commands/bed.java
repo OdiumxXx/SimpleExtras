@@ -26,13 +26,14 @@ public class bed implements CommandExecutor {
     if (sender instanceof Player) {
       player = (Player) sender;
     }
+    
+    if (player == null) {
+      sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+      return true;
+    }
 
 
     if (args.length == 0) {
-      if (player == null) {
-        sender.sendMessage("This command can only be run by a player");
-      } else {
-
         if (player.getBedSpawnLocation() != null) { // if bed location exists
           final Location bedloc = player.getBedSpawnLocation().add(0, 1, 0);
 
@@ -89,10 +90,9 @@ public class bed implements CommandExecutor {
           player.sendMessage(ChatColor.YELLOW + " You have not yet slept in a bed");
           return true;
         }
-
-      } 
+      
     } else if(args.length == 1 && player.hasPermission("simpleextras.bed.other")) { // IF LOOKING FOR THE BED OF ANOTHER USER
-
+      
       final String target = plugin.myGetPlayerName(args[0]);
       OfflinePlayer targetplay = Bukkit.getOfflinePlayer(target);                
 

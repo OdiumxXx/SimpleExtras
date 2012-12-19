@@ -22,7 +22,13 @@ public class ignite implements CommandExecutor {
       player = (Player) sender;
     }
 
-    if (args.length == 0) {        
+    if (args.length == 0) {  
+      
+      if (player == null) {
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
+      }
+      
       player.setFireTicks(10000);
       sender.sendMessage(ChatColor.GREEN + "" + player.getDisplayName() + ChatColor.GRAY + " ignited");
       return true;

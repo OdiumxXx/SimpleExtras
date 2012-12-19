@@ -18,11 +18,14 @@ public class grow implements CommandExecutor {
   public grow(SimpleExtras plugin)  {
     this.plugin = plugin;
   }
+  
+  
 
   public boolean growTrees(Player player, String[] args, int radius) {
     Block playerCenter = player.getLocation().getBlock();    
     int tree = 0;
     Random rnd = new Random();
+    
 
     for (int x = -radius; x < radius; x++) {
       for (int y = -radius; y < radius; y++) {
@@ -206,6 +209,12 @@ public class grow implements CommandExecutor {
     if (sender instanceof Player) {
       player = (Player) sender;
     }
+    
+    if (player == null) {
+      sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+      return true;
+    }
+    
     int radius = 0;
 
     if (args.length == 0) {      

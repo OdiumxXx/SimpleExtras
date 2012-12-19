@@ -24,6 +24,12 @@ public class fly implements CommandExecutor {
     }
 
     if(args.length == 0) {
+      
+      if (player == null) {
+        sender.sendMessage("This command can only be run by a player");
+        return true;
+      } 
+      
       Boolean canfly = player.getAllowFlight();
       if(canfly == true) {
         player.setAllowFlight(false);

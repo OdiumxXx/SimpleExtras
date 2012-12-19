@@ -33,6 +33,12 @@ public class mobattack implements CommandExecutor {
     }
     // TARGET SELF (NO RADIUS)
     if (args.length == 0) {
+      
+      if (player == null) {
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
+      }
+      
       Player target = player;
       for (final Entity entity : target.getNearbyEntities(100, 100, 100)) {
         if (entity != null && entity instanceof Creature) {

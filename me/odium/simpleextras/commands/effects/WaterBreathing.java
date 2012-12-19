@@ -26,6 +26,12 @@ public class WaterBreathing implements CommandExecutor {
     }
     // ON SELF
     if (args.length == 0) {
+      
+      if (player == null) {
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
+      }
+      
       // CHECK FOR EXISTING EFFECT
       if (player.hasPotionEffect(PotionEffectType.WATER_BREATHING)) {
         player.removePotionEffect(PotionEffectType.WATER_BREATHING);
@@ -42,8 +48,8 @@ public class WaterBreathing implements CommandExecutor {
       if (target == null) {
         sender.sendMessage(ChatColor.RED + args[0] + " is not online");
         return true;
-        // CHECK FOR EXIsTING EFFECT
-      } else {
+      }
+   // CHECK FOR EXIsTING EFFECT
         if (target.hasPotionEffect(PotionEffectType.WATER_BREATHING)) {
           target.removePotionEffect(PotionEffectType.WATER_BREATHING);
           sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has lost Water Breathing");
@@ -55,9 +61,14 @@ public class WaterBreathing implements CommandExecutor {
         sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " has Water Breathing for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         target.sendMessage(ChatColor.GREEN + "* " + ChatColor.WHITE + "You have Water Breathing for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         return true;
-      }
+      
     } else if (args.length == 2 && player == null || player.hasPermission("simpleextras.waterbreathing.other")) {  
       Player target = Bukkit.getPlayer(args[0]);
+      // CHECK IF TARGET EXISTS
+      if (target == null) {
+        sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+        return true;
+      }
       String min = args[1];
       int mintemp = Integer.parseInt( min );
       int mins = 1200 * mintemp; 
@@ -75,5 +86,4 @@ public class WaterBreathing implements CommandExecutor {
 
     return true;    
   }
-
 }

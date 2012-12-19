@@ -22,6 +22,12 @@ public class sethome implements CommandExecutor {
     if (sender instanceof Player) {
       player = (Player) sender;
     }
+    
+    if (player == null) {
+      sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+      return true;
+    }
+    
     // SETTING HOME FOR SELF
     if (args.length == 0) {
       // GET LOCATION DATA

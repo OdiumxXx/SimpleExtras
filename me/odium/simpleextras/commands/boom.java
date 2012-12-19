@@ -33,7 +33,8 @@ public class boom implements CommandExecutor {
     // IF ON SELF
     if (args.length == 0) {
       if (player == null) {
-        sender.sendMessage("This command can only be run by a player");
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
       }
       ExplosionPower = 3;
       BlastMode = 0;
@@ -41,9 +42,13 @@ public class boom implements CommandExecutor {
       BoomMsgSENDER = ChatColor.RED+"Boom!";
       BoomMsgTARGET = null;
       // IF ONE ARG
-    } else if(args.length == 1) {
+    } else if(args.length == 1) {      
       // IF ARG IS DAMAGE
       if(args[0] == "-d") {
+        if (player == null) {
+          sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+          return true;
+        }
         ExplosionPower = 3;
         BlastMode = 2;
         target = player;
@@ -51,6 +56,10 @@ public class boom implements CommandExecutor {
         BoomMsgTARGET = null;
         // IF ARGS IS NUKE
       } else if(args[0] == "-n") {
+        if (player == null) {
+          sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+          return true;
+        }
         if (player.hasPermission("boom.nuke")) {      
           ExplosionPower = 30;
           BlastMode = 2;
@@ -124,11 +133,11 @@ public class boom implements CommandExecutor {
     
     plugin.Blast_Mode.put(targetLocation, BlastMode);
     target.getWorld().createExplosion(target.getLocation(), ExplosionPower);    
-    if (BoomMsgSENDER != null) {
-      player.sendMessage(BoomMsgSENDER);
+    if (BoomMsgSENDER != null) {      
+      sender.sendMessage(BoomMsgSENDER);
     }
     if (BoomMsgTARGET != null) {
-      player.sendMessage(BoomMsgTARGET);
+      sender.sendMessage(BoomMsgTARGET);
     }
     return true;
   }

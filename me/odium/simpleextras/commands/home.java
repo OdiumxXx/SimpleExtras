@@ -26,6 +26,11 @@ public class home implements CommandExecutor {
             player = (Player) sender;
         }
         
+        if (player == null) {
+          sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+          return true;
+        }
+        
         int fwarp = plugin.getConfig().getInt("HomeEffectDuration");
         final int finishHome =  fwarp * 20;
 

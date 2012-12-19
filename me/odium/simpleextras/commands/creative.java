@@ -25,6 +25,12 @@ public class creative implements CommandExecutor {
     }
 
     if (args.length == 0) {
+      
+      if (player == null) {
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
+      }
+      
       int gm = player.getGameMode().getValue();
       if(gm == 0){
         player.setGameMode(GameMode.CREATIVE);

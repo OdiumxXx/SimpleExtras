@@ -3,6 +3,7 @@ package me.odium.simpleextras.commands;
 import me.odium.simpleextras.SimpleExtras;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -25,9 +26,10 @@ public class tpb implements CommandExecutor {
         }
 
         if (player == null) {
-            sender.sendMessage("Command must be run by a player");
-            return true;
+          sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+          return true;
         }
+        
         if (args.length == 0) {                
             sender.sendMessage(" Usage: /tpb <player>");
             return true;

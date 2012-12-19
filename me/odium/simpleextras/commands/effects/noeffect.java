@@ -38,6 +38,7 @@ public class noeffect implements CommandExecutor {
       player.removePotionEffect(PotionEffectType.HUNGER);
       player.removePotionEffect(PotionEffectType.WEAKNESS);
       player.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+      player.removePotionEffect(PotionEffectType.POISON);
       sender.sendMessage(ChatColor.GREEN+"Effects Removed");
       return true;
     } else if (args.length == 1) {
@@ -60,6 +61,7 @@ public class noeffect implements CommandExecutor {
       target.removePotionEffect(PotionEffectType.HUNGER);
       target.removePotionEffect(PotionEffectType.WEAKNESS);
       target.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+      target.removePotionEffect(PotionEffectType.POISON);
       sender.sendMessage(ChatColor.GREEN+"Effects Removed from "+target.getDisplayName());
       return true;
     }

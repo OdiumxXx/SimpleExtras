@@ -26,6 +26,12 @@ public class speed implements CommandExecutor {
     }
 
     if (args.length == 0) {
+      
+      if (player == null) {
+        sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+        return true;
+      }
+      
       player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
       sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
       return true;
@@ -34,14 +40,19 @@ public class speed implements CommandExecutor {
       if (target == null) {
         sender.sendMessage(ChatColor.RED + args[0] + " is not online");
         return true;
-      } else {
+      }
         target.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1200, 2));
         sender.sendMessage(ChatColor.GREEN + "" + target.getDisplayName() + ChatColor.WHITE + " given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         target.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + "You have been given speed x2 for " + ChatColor.GREEN + "1" + ChatColor.WHITE + " minute");
         return true;
-      }
+      
     } else if (args.length == 2 && player == null || player.hasPermission("simpleextras.speed.other")) {  
       Player target = Bukkit.getPlayer(args[0]);
+      // CHECK IF TARGET EXISTS
+      if (target == null) {
+        sender.sendMessage(ChatColor.RED + args[0] + " is not online");
+        return true;
+      }
       String min = args[1];
       int mintemp = Integer.parseInt( min );
       int mins = 1200 * mintemp;        

@@ -27,16 +27,13 @@ public class flame implements CommandExecutor {
   String FlameStat;
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
-    final Player me = (Player) sender;
+    
     Player player = null;
     if (sender instanceof Player) {
       player = (Player) sender;
     }
 
-    if (player == null) {
-      sender.sendMessage("This command can only be run by a player");
-      return true;
-    } 
+    final Player me = (Player) sender;
 
     if (args.length == 0) {
       if(flameEnabled.containsKey(player)) {
