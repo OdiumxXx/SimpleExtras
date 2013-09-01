@@ -34,7 +34,6 @@ public class survival implements CommandExecutor {
       int gm = player.getGameMode().getValue();
       if(gm == 1){
         player.setGameMode(GameMode.SURVIVAL);
-        plugin.log.info(player + "Changed gamemode to SURVIVAL");
         sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.WHITE + "Your Gamemode has been changed to " + ChatColor.DARK_GREEN + "Survival");
         return true;
       } else {
@@ -50,7 +49,6 @@ public class survival implements CommandExecutor {
         int gm = target.getGameMode().getValue();
         if(gm == 1){
           target.setGameMode(GameMode.SURVIVAL);
-          plugin.log.info(player + "Changed gamemode to SURVIVAL");
           sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + "'s" + ChatColor.WHITE + " Gamemode has been changed to " + ChatColor.DARK_GREEN + "Survival");
           return true;
         } else {

@@ -30,13 +30,14 @@ public class boom implements CommandExecutor {
     String BoomMsgSENDER = null;
     String BoomMsgTARGET = null;
     String playerName;
+    int NukePower = plugin.getConfig().getInt("NukePower");
     // IF ON SELF
     if (args.length == 0) {
       if (player == null) {
         sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
         return true;
       }
-      ExplosionPower = 3;
+      ExplosionPower = 0;
       BlastMode = 0;
       target = player;
       BoomMsgSENDER = ChatColor.RED+"Boom!";
@@ -61,7 +62,7 @@ public class boom implements CommandExecutor {
           return true;
         }
         if (player.hasPermission("boom.nuke")) {      
-          ExplosionPower = 30;
+          ExplosionPower = NukePower;
           BlastMode = 2;
           target = player;
           BoomMsgSENDER = ChatColor.RED+"KaBoom!";
@@ -137,7 +138,7 @@ public class boom implements CommandExecutor {
       sender.sendMessage(BoomMsgSENDER);
     }
     if (BoomMsgTARGET != null) {
-      sender.sendMessage(BoomMsgTARGET);
+     target.sendMessage(BoomMsgTARGET);
     }
     return true;
   }

@@ -33,6 +33,11 @@ public class flame implements CommandExecutor {
       player = (Player) sender;
     }
 
+    if (player == null) {
+      sender.sendMessage(ChatColor.RED+"This command can only be run by a player");
+      return true;
+    }
+    
     final Player me = (Player) sender;
 
     if (args.length == 0) {
@@ -77,6 +82,10 @@ public class flame implements CommandExecutor {
 
         // FLAME STAT ON ANOTHER USER
       } else if (Bukkit.getPlayer(args[0]) != null) {
+        if (Bukkit.getPlayer(args[0]) == null) {
+          sender.sendMessage(ChatColor.RED+"Player "+args[1]+" not online");
+          return true;              
+        }        
         Player target = Bukkit.getPlayer(args[0]);
         if(flameEnabled.containsKey(target)) {
           if(flameEnabled.get(target) == true) {

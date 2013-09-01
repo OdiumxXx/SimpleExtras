@@ -42,3 +42,4 @@ NewPlayer:
 owner: ServerOwner
 website: http://YourWebAddressHere.com
 HomeEffectDuration: 3
+NukePower: 40

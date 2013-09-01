@@ -1,6 +1,6 @@
 name: SimpleExtras
 main: me.odium.simpleextras.SimpleExtras
-version: 0.9.6
+version: 0.9.9
 commands:
    ranks:
       description: Return list of ranks from config

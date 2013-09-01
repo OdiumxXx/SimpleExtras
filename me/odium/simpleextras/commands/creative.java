@@ -34,7 +34,6 @@ public class creative implements CommandExecutor {
       int gm = player.getGameMode().getValue();
       if(gm == 0){
         player.setGameMode(GameMode.CREATIVE);
-        plugin.log.info(player + "Changed gamemode to CREATIVE");
         sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.WHITE + "Your Gamemode has been changed to " + ChatColor.DARK_GREEN + "Creative");
         return true;
       } else {
@@ -50,7 +49,6 @@ public class creative implements CommandExecutor {
         int gm = target.getGameMode().getValue();
         if(gm == 0){
           target.setGameMode(GameMode.CREATIVE);
-          plugin.log.info(player + "Changed gamemode to CREATIVE");
           sender.sendMessage(ChatColor.GREEN + "* " + ChatColor.DARK_GREEN + target.getDisplayName() + "'s"+ChatColor.WHITE + " Gamemode has been changed to " + ChatColor.DARK_GREEN + "Creative");
           return true;
         } else {

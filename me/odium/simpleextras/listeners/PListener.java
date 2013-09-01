@@ -4,6 +4,7 @@ import java.util.List;
 
 import me.odium.simpleextras.SimpleExtras;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -16,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -118,7 +120,7 @@ public class PListener implements Listener {
     }
   }
 
-  
+
   @EventHandler(priority = EventPriority.LOW) 
   public void onExplosionEvent(final EntityExplodeEvent event) {
 
@@ -165,5 +167,27 @@ public class PListener implements Listener {
 
   }
 
+  @EventHandler(priority = EventPriority.NORMAL) 
+  public void PlayerBedEnterEvent(PlayerBedEnterEvent event) {    
+    Player player = event.getPlayer();
+    Block bed = event.getBed();
+    String worldName = player.getWorld().getName();    
+    String playerName = player.getName();    
+
+    double locX = bed.getLocation().getX();
+    double locY = bed.getLocation().getY();
+    double locZ = bed.getLocation().getZ();
+    // SAVE THE LOCATION DATA TO STRING
+    StringBuilder sb1 = new StringBuilder(); 
+    sb1.append(worldName+",");
+    sb1.append(locX+",");
+    sb1.append(locY+",");
+    sb1.append(locZ+",");
+    String Bed_Location = sb1.toString();
+
+    plugin.getBedsConfig().set(playerName+"."+worldName, Bed_Location);
+    plugin.saveBedsConfig();
+    player.sendMessage(ChatColor.YELLOW+"Your bed location for "+ChatColor.RESET+worldName+ChatColor.YELLOW+" has been set.");    
+  }
 
 }

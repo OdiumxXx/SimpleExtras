@@ -78,7 +78,8 @@ public class fly implements CommandExecutor {
         String min = args[1];
         int mintemp = Integer.parseInt( min );
         int mins = 1200 * mintemp;
-        int warningmins = 1000 * mintemp;
+        int warningminstemp = 1200 * mintemp;
+        int warningmins = warningminstemp - 200;
         if(canfly == true) {
           sender.sendMessage("Already allowed to fly, timer set anyway.");       
           

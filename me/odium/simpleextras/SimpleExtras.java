@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -116,6 +117,42 @@ public class SimpleExtras extends JavaPlugin {
     }
   }
   // End Custom Config
+  
+  
+  private FileConfiguration BedsConfig = null;
+  private File BedsConfigFile = null;
+  
+  public void reloadBedsConfig() {
+    if (BedsConfigFile == null) {
+      BedsConfigFile = new File(getDataFolder(), "BedsConfig.yml");
+    }
+    BedsConfig = YamlConfiguration.loadConfiguration(BedsConfigFile);
+
+    // Look for defaults in the jar
+    InputStream defConfigStream = getResource("BedsConfig.yml");
+    if (defConfigStream != null) {
+      YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+      BedsConfig.setDefaults(defConfig);
+    }
+  }
+  public FileConfiguration getBedsConfig() {
+    if (BedsConfig == null) {
+      reloadBedsConfig();
+    }
+    return BedsConfig;
+  }
+
+  public void saveBedsConfig() {
+    if (BedsConfig == null || BedsConfigFile == null) {
+      return;
+    }
+    try {
+      BedsConfig.save(BedsConfigFile);
+    } catch (IOException ex) {
+      Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + BedsConfigFile, ex);
+    }
+  }
+  // End Custom Config
 
 
   public void onEnable(){
@@ -125,6 +162,16 @@ public class SimpleExtras extends JavaPlugin {
     cfgOptions.copyDefaults(true);
     cfgOptions.copyHeader(true);
     saveConfig();
+    // Update Homes to Multiworld Storage
+    if (getHomesConfig().getString("Updated") == null) {
+      Update_Home();
+    }
+//    // Load Beds Config
+//    FileConfiguration ccfg = getBedsConfig();
+//    FileConfigurationOptions ccfgOptions = ccfg.options();
+//    ccfgOptions.copyDefaults(true);
+//    ccfgOptions.copyHeader(true);
+//    saveBedsConfig();
     // declare new listener
     new PListener(this);
     // declare command executor
@@ -184,6 +231,26 @@ public class SimpleExtras extends JavaPlugin {
 
   public void onDisable(){ 
     log.info("[" + getDescription().getName() + "] " + getDescription().getVersion() + " disabled.");	
+  }
+  
+  public boolean Update_Home(){
+    Set<String> Defaults = getHomesConfig().getKeys(false);
+
+    for (String Key : Defaults) {
+      String Old_Loc = getHomesConfig().getString(Key+".location");
+
+      String[] vals = Old_Loc.split(",");
+      String world = vals[0];       
+
+      getHomesConfig().set(Key+".location", null);
+      getHomesConfig().set(Key+"."+world, Old_Loc);
+      getHomesConfig().set("Updated", "true");
+      log.info("Updated: "+Key);
+      saveHomesConfig();
+      
+      
+    }
+    return true;
   }
 
   public static String getCurrentDTG (long l_time){

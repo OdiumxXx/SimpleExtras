@@ -80,7 +80,9 @@ public class se implements CommandExecutor {
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
       if(player == null || player.hasPermission("simpleextras.reload")) {
         plugin.reloadConfig();
-        sender.sendMessage(ChatColor.GREEN + "SimpleExtras Config Reloaded!");
+        plugin.reloadHomesConfig();
+        plugin.reloadBedsConfig();
+        sender.sendMessage(ChatColor.GREEN + "SimpleExtras Config, Homes & Bed Data Reloaded!");
         return true;
       } else {
         sender.sendMessage(ChatColor.RED + "You do not have permission");

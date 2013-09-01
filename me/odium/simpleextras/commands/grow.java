@@ -3,6 +3,7 @@ package me.odium.simpleextras.commands;
 import java.util.Random;
 import me.odium.simpleextras.SimpleExtras;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
@@ -42,7 +43,7 @@ public class grow implements CommandExecutor {
             } else if (dataValue == 2) {
               b.getWorld().generateTree(b.getLocation(), TreeType.BIRCH);  
             } else if (dataValue == 3) {
-              if (rnd.nextInt(100) > 95) {    // Random chance (5%)
+              if (rnd.nextInt(100) > 90) {    // Random chance (10%)
                 b.getWorld().generateTree(b.getLocation(), TreeType.JUNGLE);
               } else {
                 b.getWorld().generateTree(b.getLocation(), TreeType.SMALL_JUNGLE);
@@ -202,7 +203,139 @@ public class grow implements CommandExecutor {
     return true;
   }
 
+  public boolean growCoCoa(Player player, String[] args, int radius) {
+    Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
+    int cocoa = 0;    
 
+    for (int x = -radius; x < radius; x++) {
+      for (int y = -radius; y < radius; y++) {
+        for (int z = -radius; z < radius; z++) {
+          Block b = playerCenter.getRelative(x,y,z);
+
+          if (playerCenter.getRelative(x,y,z).getType() == Material.COCOA) {
+            int dataValue = b.getData();
+
+            // west
+            if (dataValue == 0) {
+              b.setData((byte) 8);
+              cocoa++;
+            } else if (dataValue == 4) {
+              b.setData((byte) 8);
+              cocoa++;
+
+              // north
+            } else  if (dataValue == 1) {
+              b.setData((byte) 9);
+              cocoa++;
+            } else  if (dataValue == 5) {
+              b.setData((byte) 9);
+              cocoa++;  
+
+              // east
+            } else if (dataValue == 2) {
+              b.setData((byte) 10);
+              cocoa++;
+            } else if (dataValue == 6) {
+              b.setData((byte) 10);
+              cocoa++;            
+
+              //South
+            } else if (dataValue == 3) {
+              b.setData((byte) 11);
+              cocoa++;
+            } else if (dataValue == 7) {
+              b.setData((byte) 11);
+              cocoa++;
+            }
+          }
+        }
+      }
+    }
+    player.sendMessage(ChatColor.GREEN+"Grown "+cocoa+" cocoa plants");
+    return true;
+  }
+  
+  public boolean growNetherWart(Player player, String[] args, int radius) {
+    Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
+    int netherWarts = 0;    
+
+    for (int x = -radius; x < radius; x++) {
+      for (int y = -radius; y < radius; y++) {
+        for (int z = -radius; z < radius; z++) {
+          Block b = playerCenter.getRelative(x,y,z);
+
+          if (playerCenter.getRelative(x,y,z).getType() == Material.NETHER_WARTS) {
+            int dataValue = b.getData();
+
+            if (dataValue != 3) {
+              b.setData((byte) 3);
+              netherWarts++;
+            } else if (dataValue == (byte) 7) {
+              // DO NOTHING
+            }
+          }
+        }
+      }
+    }
+    player.sendMessage(ChatColor.GREEN+"Grown "+netherWarts+" netherwarts");
+    return true;
+  }
+  
+  public boolean growSugarCane(Player player, String[] args, int radius) {
+    Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
+    int sugarCane = 0;    
+
+    for (int x = -radius; x < radius; x++) {
+      for (int y = -radius; y < radius; y++) {
+        for (int z = -radius; z < radius; z++) {
+          Block b = playerCenter.getRelative(x,y,z);
+
+          if (b.getType() == Material.SUGAR_CANE_BLOCK) {
+            Location caneLocation = b.getLocation(); 
+
+            if (caneLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.SUGAR_CANE_BLOCK && caneLocation.clone().subtract(0,2,0).getBlock().getType() != Material.SUGAR_CANE_BLOCK && caneLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+              caneLocation.clone().add(0, 1, 0).getBlock().setType(Material.SUGAR_CANE_BLOCK);
+              sugarCane++;
+            } else if (caneLocation.clone().subtract(0,1,0).getBlock().getType() != Material.SUGAR_CANE_BLOCK && caneLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+              caneLocation.clone().add(0,1,0).getBlock().setType(Material.SUGAR_CANE_BLOCK);
+              caneLocation.clone().add(0,2,0).getBlock().setType(Material.SUGAR_CANE_BLOCK);
+              sugarCane++;
+            }          
+          }
+        }
+      }
+    }
+    player.sendMessage(ChatColor.GREEN+"Grown "+sugarCane+" SugarCane");
+    return true;
+  }
+  
+  public boolean growCactus(Player player, String[] args, int radius) {
+    Block playerCenter = player.getLocation().getBlock(); // Get Centrepoint (Player)    
+    int cactus = 0;    
+
+    for (int x = -radius; x < radius; x++) {
+      for (int y = -radius; y < radius; y++) {
+        for (int z = -radius; z < radius; z++) {
+          Block b = playerCenter.getRelative(x,y,z);
+
+          if (b.getType() == Material.CACTUS) {
+            Location caneLocation = b.getLocation(); 
+
+            if (caneLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.CACTUS && caneLocation.clone().subtract(0,2,0).getBlock().getType() != Material.CACTUS && caneLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+              caneLocation.clone().add(0, 1, 0).getBlock().setType(Material.CACTUS);
+              cactus++;
+            } else if (caneLocation.clone().subtract(0,1,0).getBlock().getType() != Material.CACTUS && caneLocation.clone().add(0, 1, 0).getBlock().getType() == Material.AIR) {
+              caneLocation.clone().add(0,1,0).getBlock().setType(Material.CACTUS);
+              caneLocation.clone().add(0,2,0).getBlock().setType(Material.CACTUS);
+              cactus++;
+            }          
+          }
+        }
+      }
+    }
+    player.sendMessage(ChatColor.GREEN+"Grown "+cactus+" cactus");
+    return true;
+  }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     Player player = null;
@@ -225,6 +358,10 @@ public class grow implements CommandExecutor {
       growMelons(player, args, radius);
       growCarrots(player, args, radius);
       growPotatoes(player, args, radius);
+      growCoCoa(player, args, radius);
+      growNetherWart(player, args, radius);
+      growSugarCane(player, args, radius);
+      growCactus(player, args, radius);
       return true;      
     } else if (args[0].equalsIgnoreCase("-t")) {
       if (args.length == 1) {
@@ -286,7 +423,46 @@ public class grow implements CommandExecutor {
         growCarrots(player, args, radius);
         return true;
       }
-
+    } else if (args[0].equalsIgnoreCase("-co")) {
+      if (args.length == 1) {
+        radius = 20;
+        growCoCoa(player, args, radius);
+        return true;
+      } else if (args.length == 2) {
+        radius = Integer.parseInt(args[1]);
+        growCoCoa(player, args, radius);
+        return true;
+      }
+    } else if (args[0].equalsIgnoreCase("-n")) {
+      if (args.length == 1) {
+        radius = 20;
+        growNetherWart(player, args, radius);
+        return true;
+      } else if (args.length == 2) {
+        radius = Integer.parseInt(args[1]);
+        growNetherWart(player, args, radius);
+        return true;
+      }
+    } else if (args[0].equalsIgnoreCase("-s")) {
+      if (args.length == 1) {
+        radius = 20;
+        growSugarCane(player, args, radius);
+        return true;
+      } else if (args.length == 2) {
+        radius = Integer.parseInt(args[1]);
+        growSugarCane(player, args, radius);
+        return true;
+      }
+    } else if (args[0].equalsIgnoreCase("-cac")) {
+      if (args.length == 1) {
+        radius = 20;
+        growCactus(player, args, radius);
+        return true;
+      } else if (args.length == 2) {
+        radius = Integer.parseInt(args[1]);
+        growCactus(player, args, radius);
+        return true;
+      }
 
 
     } else if (args.length == 1 && !args[0].equalsIgnoreCase("help")) {
@@ -305,13 +481,17 @@ public class grow implements CommandExecutor {
       growMelons(player, args, radius);
       growCarrots(player, args, radius);
       growPotatoes(player, args, radius);
+      growCoCoa(player, args, radius);
+      growNetherWart(player, args, radius);
+      growSugarCane(player, args, radius);
+      growCactus(player, args, radius);
       return true;
 
 
     } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
       sender.sendMessage(ChatColor.GOLD+"[ "+ChatColor.WHITE+"Grow"+ChatColor.GOLD+" ]");
       sender.sendMessage(ChatColor.YELLOW+"[] = Optional");
-      sender.sendMessage(" /Grow [-t/-c/-m/-pu/-po/-ca] [radius]");
+      sender.sendMessage(ChatColor.GOLD+" /Grow [-t/-c/-m/-pu/-po/-ca/-co/-n/-s/cac] [radius]");
       sender.sendMessage(ChatColor.YELLOW+"Flags");
       sender.sendMessage(" -t (Trees)");
       sender.sendMessage(" -c (Crops)");
@@ -319,6 +499,10 @@ public class grow implements CommandExecutor {
       sender.sendMessage(" -pu (Pumpkins)");
       sender.sendMessage(" -po (Potatoes)");
       sender.sendMessage(" -ca (Carrots)");      
+      sender.sendMessage(" -co (CoCoa)");
+      sender.sendMessage(" -n (NetherWart)");
+      sender.sendMessage(" -s (SugarCane)");
+      sender.sendMessage(" -cac (Cactus)");
       return true;
 
 

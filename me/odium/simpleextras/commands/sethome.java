@@ -30,9 +30,8 @@ public class sethome implements CommandExecutor {
     
     // SETTING HOME FOR SELF
     if (args.length == 0) {
-      // GET LOCATION DATA
-      World PlayerWorld = player.getWorld();
-      String PlayerWorldName = PlayerWorld.getName().toLowerCase();
+      // GET LOCATION DATA      
+      String WorldName = player.getWorld().getName();
       double locX = player.getLocation().getX();
       double locY = player.getLocation().getY();
       double locZ = player.getLocation().getZ();
@@ -40,7 +39,7 @@ public class sethome implements CommandExecutor {
       float locP = player.getLocation().getPitch();
       // SAVE THE LOCATION DATA TO STRING
       StringBuilder sb1 = new StringBuilder(); 
-      sb1.append(PlayerWorldName+",");
+      sb1.append(WorldName+",");
       sb1.append(locX+",");
       sb1.append(locY+",");
       sb1.append(locZ+",");
@@ -48,7 +47,7 @@ public class sethome implements CommandExecutor {
       sb1.append(locP);
       String PlayerLocation = sb1.toString();        
 
-      plugin.getHomesConfig().set(player.getName().toLowerCase()+".location", PlayerLocation);
+      plugin.getHomesConfig().set(player.getName().toLowerCase()+"."+WorldName, PlayerLocation);
       player.getWorld().playEffect(player.getLocation(), Effect.POTION_BREAK, 16453);
       plugin.saveHomesConfig();
       sender.sendMessage(ChatColor.YELLOW+" Home Location Set");              
@@ -57,7 +56,7 @@ public class sethome implements CommandExecutor {
     } else if (args.length == 1 && player.hasPermission("simpleextras.sethome.other")) {
       // GET LOCATION DATA
       World PlayerWorld = player.getWorld(); 
-      String PlayerWorldName = PlayerWorld.getName().toLowerCase();
+      String PlayerWorldName = PlayerWorld.getName();
       double locX = player.getLocation().getX();
       double locY = player.getLocation().getY();
       double locZ = player.getLocation().getZ();
